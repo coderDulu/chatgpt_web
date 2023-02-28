@@ -11,3 +11,6 @@
 ### 4. npm start
 
 ## build目录：dist
+
+### 效果图：
+![./images](images/img.png)
