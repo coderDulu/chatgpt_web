@@ -1,0 +1,53 @@
+.main-container {
+  width: 100vw;
+  height: 100%;
+  background-color: #fff;
+  margin: auto;
+}
+.main {
+  width: 100%;
+  height: 90% !important;
+  margin: auto;
+  padding: 1.3333vw;
+  overflow: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  background-color: #414448;
+  height: 100vh;
+}
+
+.main-tip {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.4vw;
+  box-shadow: 0 0 1.3333vw 0 rgba(0, 0, 0, .5);
+  min-width: 26.6667vw;
+  padding: 1.3333vw;
+  text-align: center;
+  height: 6.6667vw;
+  display: flex;
+  align-items: center;
+  border-radius: .6667vw;
+  background-color: #414448;
+  color: #fff;
+}
+
+
+@media screen and (min-width: 751px) {
+  .main-container {
+    width: 80vw;
+  }
+
+  .main-tip {
+    height: 50px !important;
+    font-size: 16px !important;
+    min-width:  0 !important;
+  }
+}
