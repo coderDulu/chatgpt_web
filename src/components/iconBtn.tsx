@@ -17,18 +17,17 @@ export default function iconBtn({
   className
 }: propsType) {
   return (
-    <div className={`icon-btn ${className}`}>
-      <Popconfirm
-        title={title}
-        onConfirm={onConfirm}
-        okText="是"
-        cancelText="否"
-      >
-
+    <Popconfirm
+      title={title}
+      onConfirm={onConfirm}
+      okText="是"
+      cancelText="否"
+    >
+      <div className={`icon-btn ${className}`}>
         {
           children
         }
-      </Popconfirm>
-    </div>
+      </div>
+    </Popconfirm>
   )
 }
