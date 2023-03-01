@@ -18,6 +18,8 @@
   /* position: absolute; */
   width: 4.2667vw;
   height: 4.2667vw;
+  max-width: 4.2667vw;
+  max-height: 4.2667vw;
   /* left: 1.3333vw;
   top: 2.3333vw; */
   background-color: rgb(16, 163, 127);
@@ -31,11 +33,11 @@
 
 .answer-content {
   flex: 1;
-  font-size: 3.6667vw;
+  font-size: 2.6667vw;
+
   max-height: 26.6667vw;
   overflow: auto;
   margin-left: 1.3333vw;
-  margin-top: -1.3333vw;
 }
 
 @media screen and (min-width: 751px) {

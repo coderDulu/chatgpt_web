@@ -7,7 +7,7 @@
   position: relative;
   display: flex;
   /* align-items: center; */
-  font-size: 3.6667vw;
+  font-size: 2.6667vw;
   min-height: 10.3333vw;
   max-height: 14.3333vw;
   overflow: auto;
@@ -33,7 +33,7 @@
   margin-left: 1.3333vw;
   /* margin-left: 40px; */
   height: 100%;
-  margin-top: -0.8vw;
+  /* margin-top: -0.8vw; */
 }
 
 /* 删除按钮 */
