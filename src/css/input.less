@@ -1,15 +1,32 @@
 .chat-input {
   position: fixed;
   bottom: 4.1333vw;
-  width: 70vw;
+  width: 80vw;
   height: 6.6667vw;
   background-color: #fff;
-  left: 54%;
+  left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 0 1.3333vw rgba(0, 0, 0, .5);
   border-radius: 1.3333vw;
   display: flex;
   align-items: center;
+
+  .ant-input-affix-wrapper,
+  .ant-input:focus,
+  .chat-input-content .ant-input {
+    // box-shadow: 0 0 1.3333vw rgba(0, 0, 0, .5) !important;
+    -webkit-box-shadow: none;
+    -webkit-border: none;
+    border: none !important;
+    /* box-shadow: none !important; */
+    border-radius: 1.3333vw !important;
+    /* font-size: 1.8667vw; */
+    margin: 0 1.3333vw;
+    flex: 1;
+  }
+
+  .chat-input-content {
+    box-shadow: 0 0 1.3333vw rgba(0, 0, 0, .5) !important;
+  }
 }
 
 
@@ -23,29 +40,17 @@
   font-size: 1.3333vw;
 }
 
-.ant-input-affix-wrapper,
-.ant-input:focus,
-.chat-input-content,
-.ant-input {
-  -webkit-box-shadow: none;
-  -webkit-border: none;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 1.3333vw !important;
-  /* font-size: 1.8667vw; */
-}
+
 
 /* 底栏工具 */
-.chat-utils {
-  /* position: fixed; */
-  /* bottom: 1.3333vw; */
-  margin-right: 1.3333vw;
-  margin-left: -8vw;
+.chat-utils-clear,
+.chat-utils-stop {
   height: 100%;
   display: flex;
   align-items: center;
-  /* width: 5.3333vw; */
+
 }
+
 
 
 @media screen and (min-width: 751px) {
@@ -53,12 +58,13 @@
     height: 40px;
     bottom: 20px;
     left: 51%;
+    width: 70% !important;
   }
 
-  .chat-utils {
+  /* .chat-utils-clear {
     margin-right: 10px;
     margin-left: -45px;
-  }
+  } */
 
 
   .ant-input-affix-wrapper {

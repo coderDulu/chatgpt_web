@@ -6,6 +6,7 @@ import InputContainer from '@/components/input';
 import WsClient from '@/utils/websocket';
 import localStorage from '@/utils/storage/localStorage';
 import AutoScroll from 'du-autoscroll';
+import { message } from 'antd';
 
 interface dataType {
   question: string;
@@ -16,14 +17,14 @@ interface stateType {
   text: string;   // 问题
   result: string;
   data: dataType[];
-  isSending: boolean;
+  status: 'ending' | 'stopping' | 'running'; // 三个状态：ending running stopping
 }
 
 const initState: stateType = {
   text: '',
   result: '',
   data: localStorage.get('state_data') || [],
-  isSending: false,
+  status: 'ending'
 }
 
 function reducer(state: stateType, action: any) {
@@ -48,7 +49,15 @@ function reducer(state: stateType, action: any) {
 }
 
 
-const ws = new WsClient(`ws://${location.hostname}:3100`);
+const ws = new WsClient(`ws://${location.host}/socket/`);
+
+ws.onclose = () => {
+  message.error("连接已断开！")
+}
+
+ws.onerror = () => {
+  message.error("连接错误！")
+}
 
 export const Context = React.createContext<any>(initState);
 
@@ -70,14 +79,14 @@ export default function main() {
       const { data } = e;
 
       if (data === "end") {
-        setState({ isSending: false });
+        setState({ status: 'ending' });
         resultRef.current = '';
         return;
       }
 
       resultRef.current += data;
       if (data) {
-        setState({ result: resultRef.current, isSending: true })
+        setState({ result: resultRef.current, status: 'running' })
       }
     }
     return () => {
@@ -91,8 +100,8 @@ export default function main() {
 
   useEffect(() => {
     // console.log('state => ', state);
-    const { isSending, result, data } = state;
-    if (isSending) {
+    const { status, result, data } = state;
+    if (status === 'running') {
       const length = data.length - 1 <= 0 ? 0 : data.length - 1;
 
       data[length] = typeof data[length] === 'object' ? data[length] : {};

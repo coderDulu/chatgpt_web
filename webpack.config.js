@@ -91,7 +91,7 @@ module.exports = {
     }]
   },
   devServer: {
-    host: '0.0.0.0',
+    host: 'localhost',
     port: '3030',
     open: true,
     historyApiFallback: true, // 解决前端路由刷新404问题
@@ -99,19 +99,16 @@ module.exports = {
        directory: path.resolve(__dirname, 'static'),
        publicPath: '/'
      }, */
-    // proxy: {
-    //   '/ws': {
-    //     target: 'ws://127.0.0.1:3100',
-    //     ws: true,
-    //     // secure: false,
-    //     // logLevel: 'debug',
-    //     // changeOrigin: false,
-    //     // headers: {
-    //     //   cookie: "COOKIE_AUTH_KEY=COOKIE_AUTH_VALUE;",
-    //     // },
-    //     // pathRewrite: { '^/ws': '' },
-    //   }
-    // },
+    proxy: {
+      '/socket': {
+        target: 'ws://localhost:3100',//后端目标接口地址
+        changeOrigin: true,//是否允许跨域
+        pathRewrite: {
+          '^/socket': '',//重写,
+        },
+        ws: true //开启ws, 如果是http代理此处可以不用设置
+      }
+    },
     compress: false,
     hot: true,
   },

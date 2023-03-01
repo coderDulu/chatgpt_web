@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Input, InputRef, Popconfirm, Tooltip } from 'antd';
-import { ClearOutlined, SendOutlined } from '@ant-design/icons';
-import '@/css/input.css';
+import { Input, InputRef, Popconfirm, Spin, Tooltip } from 'antd';
+import { ClearOutlined, LoadingOutlined, RedoOutlined, SendOutlined, StopOutlined } from '@ant-design/icons';
+import '@/css/input.less';
 import { Context } from '@/pages/main'
 import IconBtn from './iconBtn';
 
@@ -10,14 +10,19 @@ export default function input() {
   const [value, setValue] = useState('');
   const inputRef = useRef<InputRef>(null);
 
-  const { data, isSending } = state;
+  const { data, status } = state;
+
 
   useEffect(() => {
-    if (!isSending) {
+    inputRef.current?.focus();
+  }, [])
+
+  useEffect(() => {
+    if (status === 'ending') {
       inputRef.current?.focus();
     }
-  }, [isSending])
-
+  }, [status])
+  // 发送
   function sendMsg() {
 
     data.push({ question: value });
@@ -25,23 +30,23 @@ export default function input() {
     dispatch({
       type: "set",
       payload: {
-        // data: state.data.push({
-        //   question: value
-        // })
         text: value,
         data
       }
     })
-
-    ws.request({ text: value });
+    let sendData = '';
+    data.forEach((item: { question: any; answer: any; }) => {
+      const me = item.question;
+      me && (sendData += `ME:${me} `);
+      const ai = item.answer;
+      ai && (sendData += `${ai} `);
+    })
+    // console.log(sendData);
+    ws.request({ text: sendData });
 
     setValue('')
   }
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [])
-
+  // 清空
   function clearData() {
     dispatch({
       type: "set",
@@ -51,12 +56,50 @@ export default function input() {
     });
     localStorage.clear();
   }
+  // 停止
+  function stopReceiveData() {
+    // 设置status为stopping;
+    dispatch({
+      type: "set",
+      payload: {
+        status: 'stopping'
+      }
+    })
+    // 告诉服务器销毁当前问答
+    ws.request({
+      type: "stop"
+    })
+  }
+  // 重发
+  function restartRequest() {
+    if (status === 'ending' && data.length) {
+      data[data.length - 1].answer = '';
+      dispatch({
+        type: "set",
+        payload: {
+          data: [...data]
+        }
+      })
+    }
 
+    let sendData: string = '';
+
+    data.forEach((item: { question: any; answer: any; }, index: number) => {
+      const me = item.question;
+      me && (sendData += `ME:${me} `);
+      const ai = item.answer;
+      (index !== data.length - 1) && ai && (sendData += `${ai} `);
+    })
+
+    ws.request({
+      text: sendData
+    })
+  }
   return (
     <div className='chat-input'>
-      <div className="chat-utils">
+      <div className="chat-utils-clear">
         <IconBtn title='是否清空全部消息' onConfirm={clearData}>
-          <ClearOutlined className='chat-utils-clear' />
+          <ClearOutlined />
         </IconBtn>
       </div>
       <Input
@@ -66,9 +109,19 @@ export default function input() {
         onChange={e => setValue(e.target.value)}
         onPressEnter={sendMsg}
         placeholder="输入你的内容"
-        disabled={isSending}
-        suffix={<SendOutlined onClick={sendMsg} />}></Input>
+        disabled={status === 'running'}
+        suffix={<SendOutlined onClick={sendMsg} />}>
+      </Input>
+      <div className="chat-utils-stop">
+        {
+          status === 'running' ? <IconBtn title='终止接收？' onConfirm={stopReceiveData}>
+            <LoadingOutlined spin />
+          </IconBtn> : <IconBtn title='重新请求？' onConfirm={restartRequest}>
+            <RedoOutlined />
+          </IconBtn>
+        }
 
+      </div>
     </div>
   )
 }
