@@ -12,5 +12,7 @@
 
 ### 5. npm build 生成静态文件：dist目录
 
+#### ps：开发可以使用webpack配置ws代理，部署后需使用nginx代理`/socket`路径
+
 ### 效果图：
 ![./images](images/img.png)
