@@ -10,7 +10,7 @@
 
 ### 4. npm start
 
-## build目录：dist
+### 5. npm build 生成静态文件：dist目录
 
 ### 效果图：
 ![./images](images/img.png)
