@@ -35,12 +35,12 @@
   font-size: 3.6667vw;
 
 
-  max-height: 20.3333vw;
+  max-height: 26.6667vw;
   margin-top: -0.5333vw;
   overflow: auto;
   margin-left: 1.3333vw;
   /* height: 26.6667vw !important; */
-  white-space: normal !important;
+  /* white-space: normal !important; */
 }
 
 @media screen and (min-width: 751px) {

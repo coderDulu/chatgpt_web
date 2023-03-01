@@ -35,13 +35,16 @@ export default function input() {
       }
     })
     let sendData = '';
-    data.forEach((item: { question: any; answer: any; }) => {
+    
+    const newData = data.slice(-3);
+
+    newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
       me && (sendData += `ME:${me} `);
       const ai = item.answer;
       ai && (sendData += `${ai} `);
     })
-    // console.log(sendData);
+    
     ws.request({ text: sendData });
 
     setValue('')
