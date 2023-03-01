@@ -51,6 +51,7 @@ function reducer(state: stateType, action: any) {
 
 const ws = new WsClient(`ws://${location.host}/socket/`);
 
+
 ws.onclose = () => {
   message.error("连接已断开！")
 }

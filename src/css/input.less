@@ -9,6 +9,7 @@
   border-radius: 1.3333vw;
   display: flex;
   align-items: center;
+  
 
   .ant-input-affix-wrapper,
   .ant-input:focus,
@@ -20,7 +21,7 @@
     /* box-shadow: none !important; */
     border-radius: 1.3333vw !important;
     /* font-size: 1.8667vw; */
-    
+
     flex: 1;
   }
 
@@ -50,10 +51,10 @@
 /* 底栏工具 */
 .chat-utils-clear,
 .chat-utils-stop {
-  height: 100%;
   display: flex;
   align-items: center;
-
+  height: 100%;
+  width: 40px;
 }
 
 
@@ -64,13 +65,32 @@
     bottom: 20px;
     left: 51%;
     width: 70% !important;
+    .chat-utils-clear,
+    .chat-utils-stop {
+      height: 40px;
+      width: 40px;
+    }
   }
 
-  /* .chat-utils-clear {
-    margin-right: 10px;
-    margin-left: -45px;
-  } */
+  .ant-input-affix-wrapper {
+    font-size: 16px;
+  }
+}
 
+
+@media screen and (max-width: 400px) {
+  .chat-input {
+    height: 13.3333vw;
+
+    // bottom: 20px;
+    // left: 51%;
+    // width: 70% !important;
+    .chat-utils-clear,
+    .chat-utils-stop {
+      height: 10vw;
+      width: 10vw;
+    }
+  }
 
   .ant-input-affix-wrapper {
     font-size: 16px;

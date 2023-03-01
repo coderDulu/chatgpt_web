@@ -32,6 +32,7 @@ export class WsClient extends WebSocket {
     this.init();
 
     this._run();
+
   }
 
   // 初始化请求

@@ -11,6 +11,7 @@
   padding-top: 2.3333vw;
   /* margin-right: 2.6667vw; */
   overflow: hidden;
+  min-height: 13.3333vw;
 }
 
 .answer-icon {
@@ -30,17 +31,11 @@
 
 .answer-content {
   flex: 1;
-  /* height: 100%; */
-  /* margin-right: 20px; */
   font-size: 3.6667vw;
-
-
   max-height: 26.6667vw;
-  margin-top: -0.5333vw;
   overflow: auto;
   margin-left: 1.3333vw;
-  /* height: 26.6667vw !important; */
-  /* white-space: normal !important; */
+  margin-top: -1.3333vw;
 }
 
 @media screen and (min-width: 751px) {
@@ -51,14 +46,12 @@
   }
 
   .answer-container {
-    max-height: 200px;
+    /* max-height: 200px; */
     padding: 20px;
   }
 
   .answer-content {
-    height: 100%;
     font-size: 16px;
-    margin-left: 10px;
     margin-top: 0;
   }
 }

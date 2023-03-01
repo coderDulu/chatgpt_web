@@ -6,7 +6,7 @@
   padding: 1.3333vw;
   position: relative;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   font-size: 3.6667vw;
   min-height: 10.3333vw;
   max-height: 14.3333vw;
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1.3333vw;
   /* transform: translateY(-50%); */
   background-color: #87d068 !important;
 }
@@ -32,6 +33,7 @@
   margin-left: 1.3333vw;
   /* margin-left: 40px; */
   height: 100%;
+  margin-top: -0.8vw;
 }
 
 /* 删除按钮 */
@@ -62,6 +64,7 @@
   .question-content {
     font-size: 16px;
     margin-left: 10px;
+    margin-top: 0;
   }
 
   .question-del {

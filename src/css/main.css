@@ -6,7 +6,7 @@
 }
 .main {
   width: 100%;
-  height: 90% !important;
+  height: 90vh !important;
   margin: auto;
   padding: 1.3333vw;
   overflow: auto;

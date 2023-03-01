@@ -34,21 +34,37 @@ export default function input() {
         data
       }
     })
+
+
+    sendDataToServer();
+
+    setValue('')
+  }
+
+  function sendDataToServer() {
     let sendData = '';
-    
+
     const newData = data.slice(-3);
 
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
-      me && (sendData += `ME:${me} `);
+      me && (sendData += `ME:${me}\n`);
       const ai = item.answer;
-      ai && (sendData += `${ai} `);
+      ai && (sendData += `${ai}\n`);
     })
-    
+    // console.log(chineseToUnicode(sendData).toString(16));
     ws.request({ text: sendData });
 
-    setValue('')
   }
+
+  function chineseToUnicode(str: string) {
+    let unicode = '';
+    for (let i = 0; i < str.length; i++) {
+      unicode += str.charCodeAt(i).toString(16);
+    }
+    return unicode;
+  }
+
   // 清空
   function clearData() {
     dispatch({
@@ -85,18 +101,7 @@ export default function input() {
       })
     }
 
-    let sendData: string = '';
-
-    data.forEach((item: { question: any; answer: any; }, index: number) => {
-      const me = item.question;
-      me && (sendData += `ME:${me} `);
-      const ai = item.answer;
-      (index !== data.length - 1) && ai && (sendData += `${ai} `);
-    })
-
-    ws.request({
-      text: sendData
-    })
+    sendDataToServer();
   }
   return (
     <div className='chat-input'>
