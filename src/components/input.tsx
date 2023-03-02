@@ -48,12 +48,12 @@ export default function input() {
 
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
-      me && (sendData += `ME:${me}\n`);
+      me && (sendData += `ME:${me} `);
       const ai = item.answer;
-      ai && (sendData += `${ai}\n`);
+      ai && (sendData += `AI:${ai} `);
     })
     // console.log(chineseToUnicode(sendData).toString(16));
-    ws.request({ text: sendData });
+    ws.request({ text: sendData.toString() });
 
   }
 

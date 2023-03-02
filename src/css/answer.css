@@ -11,7 +11,7 @@
   padding-top: 2.3333vw;
   /* margin-right: 2.6667vw; */
   overflow: hidden;
-  min-height: 13.3333vw;
+  /* min-height: 13.3333vw; */
 }
 
 .answer-icon {
@@ -55,5 +55,6 @@
   .answer-content {
     font-size: 16px;
     margin-top: 0;
+    margin-left: 10px;
   }
 }

@@ -91,7 +91,7 @@ module.exports = {
     }]
   },
   devServer: {
-    host: 'localhost',
+    host: '0.0.0.0',
     port: '3030',
     open: true,
     historyApiFallback: true, // 解决前端路由刷新404问题
@@ -101,7 +101,7 @@ module.exports = {
      }, */
     proxy: {
       '/socket': {
-        target: 'ws://localhost:3100',//后端目标接口地址
+        target: 'ws://167.88.186.119:3100',//后端目标接口地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/socket': '',//重写,

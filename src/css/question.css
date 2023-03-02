@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1.3333vw;
+  /* margin-top: 1.3333vw; */
   /* transform: translateY(-50%); */
   background-color: #87d068 !important;
 }

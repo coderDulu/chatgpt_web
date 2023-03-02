@@ -36,7 +36,7 @@ function reducer(state: stateType, action: any) {
       }
     case "del": {
       const id = action.payload.id;
-      state.data.splice(id, id + 1);
+      state.data.splice(id, 1);
       return {
         ...state,
         data: [...state.data]
@@ -96,6 +96,10 @@ export default function main() {
   }, [])
 
   useEffect(() => {
+    resultRef.current = ''
+  }, [state.data.length])
+
+  useEffect(() => {
     localStorage.set('state_data', state.data);
   }, [state.data])
 
@@ -110,8 +114,12 @@ export default function main() {
       // 设置
       setState({ data: [...data] })
     }
-  }, [state.result])
+  }, [state.result, state.status])
 
+
+  // useEffect(() => {
+  //   console.log('status => ', state.status);
+  // }, [state.status])
 
 
   return (

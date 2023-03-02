@@ -16,7 +16,6 @@ export default function question({
   const { dispatch } = useContext(Context);
 
   function onConfirm() {
-    console.log(text, id);
     dispatch({
       type: "del",
       payload: {
@@ -28,7 +27,7 @@ export default function question({
   return (
     <div className='question-container' onMouseEnter={e => setShowIcon(true)} onMouseLeave={e => requestAnimationFrame(() => setShowIcon(false))}>
       {/* <div className="question-icon"></div> */}
-      <Avatar className='question-icon' shape="square" size="large">Me</Avatar>
+      <Avatar className='question-icon' shape="square" size="large">ME</Avatar>
       <div className="question-content">
         {
           text
