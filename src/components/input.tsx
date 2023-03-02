@@ -42,19 +42,21 @@ export default function input() {
   }
 
   function sendDataToServer() {
-    let sendData = '';
+    let sendData: {
+      role: string,
+      content: string
+    }[] = [];
 
     const newData = data.slice(-3);
 
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
-      me && (sendData += `ME:${me} `);
+      me && sendData.push({ role: "user", content: me })
       const ai = item.answer;
-      ai && (sendData += `AI:${ai} `);
+      ai && sendData.push({ role: "assistant", content: ai })
     })
     // console.log(chineseToUnicode(sendData).toString(16));
-    ws.request({ text: sendData.toString() });
-
+    ws.request({ text: sendData });
   }
 
   function chineseToUnicode(str: string) {
