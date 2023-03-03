@@ -12,7 +12,6 @@ export default function input() {
 
   const { data, status } = state;
 
-
   useEffect(() => {
     inputRef.current?.focus();
   }, [])
@@ -47,24 +46,27 @@ export default function input() {
       content: string
     }[] = [];
 
-    const newData = data.slice(-3);
+    const newData = data.slice(-5);
 
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
       me && sendData.push({ role: "user", content: me })
-      const ai = item.answer;
-      ai && sendData.push({ role: "assistant", content: ai })
+      // const ai = item.answer;
+
+      // ai && sendData.push({ role: "assistant", content: ai?.replace(/[\n|\s]/g, '') })
     })
     // console.log(chineseToUnicode(sendData).toString(16));
     ws.request({ text: sendData });
   }
 
   function chineseToUnicode(str: string) {
-    let unicode = '';
+    // if(!str) return;
+    let unicodeStr = "";
     for (let i = 0; i < str.length; i++) {
-      unicode += str.charCodeAt(i).toString(16);
+      let unicodeVal = str.charCodeAt(i).toString(16);
+      unicodeStr += "\\u" + "0".repeat(4 - unicodeVal.length) + unicodeVal;
     }
-    return unicode;
+    return unicodeStr;
   }
 
   // 清空
