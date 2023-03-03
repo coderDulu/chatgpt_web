@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import '@/css/main.css';
 import Question from '@/components/question';
 import Answer from '@/components/answer';
@@ -25,6 +25,28 @@ const initState: stateType = {
   result: '',
   data: localStorage.get('state_data') || [],
   status: 'ending'
+}
+
+function throttle(func, delay) {
+  let timerId;
+  return function (...args) {
+    if (!timerId) {
+      timerId = setTimeout(() => {
+        func.apply(this, args);
+        timerId = null;
+      }, delay);
+    }
+  };
+}
+
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
 }
 
 function reducer(state: stateType, action: any) {
@@ -65,6 +87,16 @@ export const Context = React.createContext<any>(initState);
 export default function main() {
   const [state, dispatch] = useReducer(reducer, initState);
   const resultRef = useRef('');
+
+  const throttleOfData = useCallback(
+    throttle((data: any[]) => {
+      // 处理搜索逻辑
+      setState({data})
+    }, 100),
+    []
+  );
+
+
 
   function setState(payload: Partial<stateType>) {
     dispatch({
@@ -108,11 +140,12 @@ export default function main() {
     const { status, result, data } = state;
     if (status === 'running') {
       const length = data.length - 1 <= 0 ? 0 : data.length - 1;
+      const newData = JSON.parse(JSON.stringify(data));
 
-      data[length] = typeof data[length] === 'object' ? data[length] : {};
-      data[length].answer = result;
+      newData[length] = typeof data[length] === 'object' ? newData[length] : {};
+      newData[length].answer = result;
       // 设置
-      setState({ data: [...data] })
+      throttleOfData(newData);
     }
   }, [state.result, state.status])
 

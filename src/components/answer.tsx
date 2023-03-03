@@ -8,6 +8,18 @@ import { marked } from 'marked';
 import MarkdownRenderer from './useMarked';
 
 
+function throttle(func, delay) {
+  let timerId;
+  return function (...args) {
+    if (!timerId) {
+      timerId = setTimeout(() => {
+        func.apply(this, args);
+        timerId = null;
+      }, delay);
+    }
+  };
+}
+
 export default function answer({
   text
 }: {
