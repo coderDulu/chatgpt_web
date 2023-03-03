@@ -51,9 +51,8 @@ export default function input() {
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
       me && sendData.push({ role: "user", content: me })
-      const ai = item.answer;
-
-      ai && sendData.push({ role: "assistant", content: ai?.replace(/[\n|\s]/g, '') })
+      // const ai = item.answer;
+      // ai && sendData.push({ role: "assistant", content: ai?.replace(/[\n|\s]/g, '') })
     })
     // console.log(chineseToUnicode(sendData).toString(16));
     ws.request({ text: sendData });

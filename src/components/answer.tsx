@@ -19,14 +19,29 @@ export default function answer({
 
   function renderDom() {
     if (!result) return null;
-    console.log(data.length - 1, id);
+    // console.log(data.length - 1, id);
+    const matchCount = result.replace(/[\n|\s]/g, '').match(/```/g);
+    const isJS = matchCount ? matchCount.length % 2 === 0 : false; // 当前是否在输出js
+    // 方案一
+    // return <MarkdownRenderer content={result} />
 
-    if (status === 'running' && data.length - 1 === id) {
+    // 方案二
+    // if(data.length - 1 === id && isJS) {
+    //   return <MarkdownRenderer content={result} />
+    // } else if(data.length - 1 !== id && isJS){
+    //   return <MarkdownRenderer content={result} />
+    // } else if(data.length - 1 === id && !isJS) {
+    //   return result;
+    // }
+    // 方案三
+    if (status === 'running' && data.length - 1 === id) { // 运行且渲染最后一个
       return result;
-    } else if (status === 'running') {
+    } else if (status === 'running') {  // 运行状态但非最后一个元素
       return <MarkdownRenderer content={result} />
-    } else if (status === 'ending') {
+    } else if (status === 'ending') {   // 结束状态下全部渲染
       // console.log(data[id].answer);
+      return <MarkdownRenderer content={result} />
+    } else {  // 其他状态渲染
       return <MarkdownRenderer content={result} />
     }
   }
@@ -40,10 +55,10 @@ export default function answer({
         {
           renderDom()
         }
-       {/* {
+        {/* {
         result &&  <MarkdownRenderer content={result} />
        } */}
-       {/* <div dangerouslySetInnerHTML={{__html: ' <p>节流函数的作用是在一定时间内，只执行一次触发的事件。比如说，当用户连续快速滚动页面时，我们可以使用节流函数来确保只有一定时间间隔内的最后一次滚动会触发相应的操作。下面是一个简单的节流函数实现：<code>javascriptfunctionthrottle(func,delay){lettimer = null;returnfunction(){constcontext = this;constargs=arguments;if(!timer){timer = setTimeout(() =& gt;{func.apply(context, args);timer=null;},delay);}}}</code>这个函数接受两个参数：要执行的函数和延迟时间。它返回一个新的函数，这个函数会在一定时间内只执行一次触发的事件。具体实现过程如下：1.定义一个变量<code>timer</code>，用于存储定时器的ID。2.返回一个新的函数，这个函数会在被调用时执行以下步骤：1.保存当前的上下文和参数。2.如果定时器不存在，则设置一个新的定时器，延迟一定时间后执行传入的函数，并传入之前保存的上下文和参数。3.如果定时器已经存在，则不执行任何操作。这样，当连续触发事件时，只有在定时器不存在时才会设置一个新的定时器，延迟一定时间后执行传入的函数，从而确保在一定时间内只执行一次触发的事件。</p>'}}></div> */}
+        {/* <div dangerouslySetInnerHTML={{__html: ' <p>节流函数的作用是在一定时间内，只执行一次触发的事件。比如说，当用户连续快速滚动页面时，我们可以使用节流函数来确保只有一定时间间隔内的最后一次滚动会触发相应的操作。下面是一个简单的节流函数实现：<code>javascriptfunctionthrottle(func,delay){lettimer = null;returnfunction(){constcontext = this;constargs=arguments;if(!timer){timer = setTimeout(() =& gt;{func.apply(context, args);timer=null;},delay);}}}</code>这个函数接受两个参数：要执行的函数和延迟时间。它返回一个新的函数，这个函数会在一定时间内只执行一次触发的事件。具体实现过程如下：1.定义一个变量<code>timer</code>，用于存储定时器的ID。2.返回一个新的函数，这个函数会在被调用时执行以下步骤：1.保存当前的上下文和参数。2.如果定时器不存在，则设置一个新的定时器，延迟一定时间后执行传入的函数，并传入之前保存的上下文和参数。3.如果定时器已经存在，则不执行任何操作。这样，当连续触发事件时，只有在定时器不存在时才会设置一个新的定时器，延迟一定时间后执行传入的函数，从而确保在一定时间内只执行一次触发的事件。</p>'}}></div> */}
       </AutoScroll>
     </div>
   )

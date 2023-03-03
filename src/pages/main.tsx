@@ -71,15 +71,38 @@ function reducer(state: stateType, action: any) {
 }
 
 
-const ws = new WsClient(`ws://${location.host}/socket/`);
+let ws = new WsClient(`ws://${location.host}/socket/`);
+let reconnectCount = 0;
+let timer: NodeJS.Timer | null = null;
 
+const reconnect = debounce((timer: any) => {
+  ws = new WsClient(`ws://${location.host}/socket/`);
+  message.warning("正在重连")
+  if (reconnectCount == 10) clearInterval(timer);  // 超过10次则终止
+
+  reconnectCount++;
+
+  ws.onopen = () => {
+    if (reconnectCount) {
+      clearInterval(timer)
+      message.success("重连成功！")
+      reconnectCount = 0;
+    }
+  }
+}, 1000)
 
 ws.onclose = () => {
   message.error("连接已断开！")
+  timer = setInterval(() => {
+    reconnect(timer)
+  }, 3000)
 }
 
+
+
 ws.onerror = () => {
-  message.error("连接错误！")
+  message.error("连接错误！");
+
 }
 
 export const Context = React.createContext<any>(initState);
@@ -89,12 +112,16 @@ export default function main() {
   const resultRef = useRef('');
 
   const debounceCallback = useCallback(
-    throttle((data: any[]) => {
+    debounce((data: any[]) => {
       // 处理搜索逻辑
       localStorage.set('state_data', data);
     }, 1000),
     []
   );
+
+  const throttleToData = useCallback(debounce((data: any[]) => {
+    requestAnimationFrame(() => setState({ data }))
+  }, 500), [])
 
 
 
@@ -126,17 +153,17 @@ export default function main() {
       ws.close(); // 关闭ws连接
     }
   }, [])
- 
+
   // 清空resultRef.current
   useEffect(() => {
     resultRef.current = ''
   }, [state.data.length])
-  
+
   // 保存data
   useEffect(() => {
     debounceCallback(state.data);
   }, [state.data])
-  
+
   // 设置result
   useEffect(() => {
     const { status, result, data } = state;
@@ -147,10 +174,24 @@ export default function main() {
       newData[length] = typeof data[length] === 'object' ? newData[length] : {};
       newData[length].answer = result;
       // 设置
+      // const matchLength = result.match(/```/g)?.length
+      // if (matchLength) {
+      //   if (matchLength % 2 === 0) {
+      //     setState({ data: newData })
+      //   } else {
+      //     console.log(matchLength);
+      //     // 节流渲染
+      //     throttleToData(newData);
+      //   }
+      // } else {
+      //   setState({ data: newData })
+      // }
       setState({ data: newData })
+
+
     }
   }, [state.result, state.status])
-  
+
   // 设置滚动条自动滚动到底部
   useEffect(() => {
     const scrollEl = document.querySelector('.main')
