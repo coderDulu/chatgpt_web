@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import '@/css/main.css';
 import Question from '@/components/question';
 import Answer from '@/components/answer';
@@ -88,11 +88,11 @@ export default function main() {
   const [state, dispatch] = useReducer(reducer, initState);
   const resultRef = useRef('');
 
-  const throttleOfData = useCallback(
+  const debounceCallback = useCallback(
     throttle((data: any[]) => {
       // 处理搜索逻辑
-      setState({data})
-    }, 100),
+      localStorage.set('state_data', data);
+    }, 1000),
     []
   );
 
@@ -126,17 +126,19 @@ export default function main() {
       ws.close(); // 关闭ws连接
     }
   }, [])
-
+ 
+  // 清空resultRef.current
   useEffect(() => {
     resultRef.current = ''
   }, [state.data.length])
-
+  
+  // 保存data
   useEffect(() => {
-    localStorage.set('state_data', state.data);
+    debounceCallback(state.data);
   }, [state.data])
-
+  
+  // 设置result
   useEffect(() => {
-    // console.log('state => ', state);
     const { status, result, data } = state;
     if (status === 'running') {
       const length = data.length - 1 <= 0 ? 0 : data.length - 1;
@@ -145,28 +147,42 @@ export default function main() {
       newData[length] = typeof data[length] === 'object' ? newData[length] : {};
       newData[length].answer = result;
       // 设置
-      throttleOfData(newData);
+      setState({ data: newData })
     }
   }, [state.result, state.status])
+  
+  // 设置滚动条自动滚动到底部
+  useEffect(() => {
+    const scrollEl = document.querySelector('.main')
+    const { scrollHeight } = scrollEl;
 
-
-  // useEffect(() => {
-  //   console.log('status => ', state.status);
-  // }, [state.status])
+    scrollHeight && setTimeout(() => {
+      scrollEl?.scrollTo({
+        top: scrollHeight
+      })
+    }, 10);
+  }, [])
 
 
   return (
     <Context.Provider value={{ state, dispatch, ws }}>
       <div className='main-container'>
-        <AutoScroll isAuto className="main">
+        <AutoScroll className="main">
           {
             state.data.length ? state.data.map((item: dataType, index: number) => {
-              return <div key={index}>
-                <Question id={index} text={item.question}></Question>
-                <Answer text={item.answer}></Answer>
-              </div>
+              return (
+                <div key={index}>
+                  <Question id={index} text={item.question}></Question>
+                  {
+                    <Answer id={index} result={item.answer}></Answer>
+                  }
+                </div>
+              )
             }) : <div className='main-tip'>在输入框中输入内容开始聊天 ψ(｀∇´)ψ</div>
           }
+          {/* {
+            Array(20).fill(0).map((item, index) => <div style={{height: 200}}>{index}</div>)
+          } */}
         </AutoScroll>
       </div>
       <InputContainer></InputContainer>
