@@ -114,7 +114,8 @@ module.exports = {
      }, */
     proxy: {
       '/socket': {
-        target: 'ws://localhost:3100',// 本地目标接口地址
+        // target: 'ws://localhost:3100',// 本地目标接口地址
+        target: 'ws://167.88.186.119:3100',// 本地目标接口地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/socket': '',//重写,
