@@ -51,11 +51,12 @@ export default function input() {
     newData.forEach((item: { question: string; answer: string; }) => {
       const me = item.question;
       me && sendData.push({ role: "user", content: me })
-      // const ai = item.answer;
-      // ai && sendData.push({ role: "assistant", content: ai?.replace(/[\n|\s]/g, '') })
+      const ai = item.answer?.replace(/[\n|\s]/g, '') ?? '';
+      const aiLen = ai.length;
+      ai && sendData.push({ role: "assistant", content: aiLen >= 300 ? ai.slice(-500) : ai })
     })
     // console.log(chineseToUnicode(sendData).toString(16));
-    ws.request({ text: sendData });
+    ws.send(JSON.stringify({ text: sendData }));
   }
 
   function chineseToUnicode(str: string) {
@@ -88,9 +89,9 @@ export default function input() {
       }
     })
     // 告诉服务器销毁当前问答
-    ws.request({
+    ws.send(JSON.stringify({
       type: "stop"
-    })
+    }))
   }
   // 重发
   function restartRequest() {

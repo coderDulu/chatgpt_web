@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import '@/css/question.css';
+import '@/css/question.less';
 import { Avatar } from 'antd';
 import { Context } from '@/pages/main';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -27,7 +27,7 @@ export default function question({
   return (
     <div className='question-container' onMouseEnter={e => setShowIcon(true)} onMouseLeave={e => requestAnimationFrame(() => setShowIcon(false))}>
       {/* <div className="question-icon"></div> */}
-      <Avatar className='question-icon' shape="square" size="large">ME</Avatar>
+      <div className='question-icon' >ME</div>
       <div className="question-content">
         {
           text

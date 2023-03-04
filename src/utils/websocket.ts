@@ -21,13 +21,13 @@ export class WsClient extends WebSocket {
     // 创建连接
     super(wsurl, ['json']);
 
-    this.onclose = (event) => {
-      console.log('service is closed');
-    };
+    // this.onclose = (event) => {
+    //   console.log('service is closed');
+    // };
 
-    this.onerror = () => {
-      console.log('service connect failed');
-    };
+    // this.onerror = () => {
+    //   console.log('service connect failed');
+    // };
 
     this.init();
 

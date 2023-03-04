@@ -1,7 +1,7 @@
 .chat-input {
   position: fixed;
-  bottom: 2vw;
-  width: 80%;
+  bottom: 4.1333vw;
+  width: 80vw;
   height: 6.6667vw;
   background-color: #fff;
   left: 50%;
@@ -27,7 +27,7 @@
 
   .ant-input-affix-wrapper {
     box-shadow: 0 0 1.3333vw rgba(0, 0, 0, .5) !important;
-    margin: 0 20px;
+    margin: 0 1.3333vw;
   }
 
   .ant-input {
@@ -53,44 +53,42 @@
 .chat-utils-stop {
   display: flex;
   align-items: center;
-  height: 50px;
-  width: 50px;
+  height: 100%;
+  width: 40px;
 }
 
 
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 751px) {
   .chat-input {
-    height: 50px;
+    height: 40px;
     bottom: 20px;
     left: 51%;
-    width: 70%;
-    max-width: 1000px;
+    width: 70% !important;
     .chat-utils-clear,
     .chat-utils-stop {
       height: 40px;
       width: 40px;
-      font-size: 20px;
     }
   }
 
   .ant-input-affix-wrapper {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 400px) {
   .chat-input {
-    height: 50px;
+    height: 13.3333vw;
 
     // bottom: 20px;
     // left: 51%;
     // width: 70% !important;
     .chat-utils-clear,
     .chat-utils-stop {
-      height: 40px;
-      width: 40px;
+      height: 10vw;
+      width: 10vw;
     }
   }
 

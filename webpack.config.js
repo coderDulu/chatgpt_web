@@ -10,14 +10,27 @@ const isProduction = process.env.NODE_ENV === 'production'
 // 处理css的loader
 const handleCssLoaders = (loader) => {
   return [
-    isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-    "css-loader", {
+    isProduction ? MiniCssExtractPlugin.loader : 
+    "style-loader",
+    "css-loader", 
+    {
       // 配合package.json中的browserslist 
       // 处理兼容性
       loader: "postcss-loader",
       options: {
         postcssOptions: {
-          plugin: ['postcss-preset-env']
+          plugins: [
+            require('postcss-px-to-viewport')({
+              viewportWidth: 750, // 设计稿宽度
+              unitPrecision: 3, // 转换后保留的小数位数
+              viewportUnit: 'vw', // 转换后使用的视窗单位
+              selectorBlackList: ['.ignore', '.hairlines'], // 不转换的类名
+              minPixelValue: 1, // 小于等于 1px 的不转换
+              mediaQuery: false, // 是否允许在媒体查询中转换
+              exclude: /node_modules/i
+            }),
+            ['postcss-preset-env', { browsers: 'last 2 versions' }],
+          ]
         }
       }
     },
@@ -93,7 +106,7 @@ module.exports = {
   devServer: {
     host: '127.0.0.1',
     port: '3030',
-    open: true,
+    open: false,
     historyApiFallback: true, // 解决前端路由刷新404问题
     /*  static: {
        directory: path.resolve(__dirname, 'static'),
@@ -101,7 +114,7 @@ module.exports = {
      }, */
     proxy: {
       '/socket': {
-        target: 'ws://localhost:3100',//后端目标接口地址
+        target: 'ws://localhost:3100',// 本地目标接口地址
         changeOrigin: true,//是否允许跨域
         pathRewrite: {
           '^/socket': '',//重写,
