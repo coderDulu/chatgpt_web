@@ -1,10 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import '@/css/answer.less'
 import { Context } from '@/pages/main'
 import AutoScroll from 'du-autoscroll';
 import 'du-autoscroll/lib/dist/index.css';
 import MarkdownRenderer from './useMarked';
-
 
 export default function answer({
   id,
@@ -16,34 +15,43 @@ export default function answer({
 
   const { state } = useContext(Context);
   const { data, status } = state;
+  const [renderEls, setRenderEls] = useState<any[]>([]);
+  const renderLenRef = useRef(0);
+
+  useEffect(() => {
+    if (renderEls.length !== renderLenRef.current) {
+      console.log('render', renderEls);
+    }
+
+
+    return () => {
+      renderLenRef.current = renderEls.length
+    }
+  }, [renderEls])
+
+  useEffect(() => {
+    // 方案三截取
+    const renderEls = result.split(/(```[\s\S]*?```)/g).filter(Boolean);
+    setRenderEls(renderEls);
+  }, [result])
 
   function renderDom() {
     if (!result) return null;
     // console.log(data.length - 1, id);
     const matchCount = result.replace(/[\n|\s]/g, '').match(/```/g);
-    const isJS = matchCount ? matchCount.length % 2 === 0 : false; // 当前是否在输出js
+    const isCode = matchCount ? matchCount.length % 2 === 0 : false; // 当前是否在输出js
     // 方案一
     // return <MarkdownRenderer content={result} />
 
     // 方案二
-    // if(data.length - 1 === id && isJS) {
-    //   return <MarkdownRenderer content={result} />
-    // } else if(data.length - 1 !== id && isJS){
-    //   return <MarkdownRenderer content={result} />
-    // } else if(data.length - 1 === id && !isJS) {
-    //   return result;
-    // }
-    // 方案三
-    if (status === 'running' && data.length - 1 === id) { // 运行且渲染最后一个
+    if (data.length - 1 === id && isCode) {
+      return <MarkdownRenderer content={result} />
+    } else if (data.length - 1 !== id && isCode) {
+      return <MarkdownRenderer content={result} />
+    } else if (data.length - 1 === id && !isCode) {
       return result;
-    } else if (status === 'running') {  // 运行状态但非最后一个元素
-      return <MarkdownRenderer content={result} />
-    } else if (status === 'ending') {   // 结束状态下全部渲染
-      // console.log(data[id].answer);
-      return <MarkdownRenderer content={result} />
-    } else {  // 其他状态渲染
-      return <MarkdownRenderer content={result} />
     }
+
   }
 
   return (
