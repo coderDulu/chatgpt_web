@@ -71,10 +71,6 @@ function reducer(state: stateType, action: any) {
 }
 
 
-let reconnectCount = 0;
-
-
-
 export const Context = React.createContext<any>(initState);
 
 export default function main() {
@@ -120,8 +116,6 @@ useEffect(() => {
   }
 
   if (result) {
-    // console.log(result, state.status);
-    // resultRef.current += result;
     state.status !== 'running' && setState({ status: 'running' })
     setLastData(result);
   }

@@ -15,41 +15,25 @@ export default function answer({
 
   const { state } = useContext(Context);
   const { data, status } = state;
-  const [renderEls, setRenderEls] = useState<any[]>([]);
-  const renderLenRef = useRef(0);
 
-  useEffect(() => {
-    if (renderEls.length !== renderLenRef.current) {
-      console.log('render', renderEls);
-    }
-
-
-    return () => {
-      renderLenRef.current = renderEls.length
-    }
-  }, [renderEls])
-
-  useEffect(() => {
-    // 方案三截取
-    const renderEls = result.split(/(```[\s\S]*?```)/g).filter(Boolean);
-    setRenderEls(renderEls);
-  }, [result])
 
   function renderDom() {
     if (!result) return null;
     // console.log(data.length - 1, id);
-    const matchCount = result.replace(/[\n|\s]/g, '').match(/```/g);
+    const matchCount = result.match(/```/g);
     const isCode = matchCount ? matchCount.length % 2 === 0 : false; // 当前是否在输出js
     // 方案一
     // return <MarkdownRenderer content={result} />
 
     // 方案二
-    if (data.length - 1 === id && isCode) {
-      return <MarkdownRenderer content={result} />
-    } else if (data.length - 1 !== id && isCode) {
-      return <MarkdownRenderer content={result} />
-    } else if (data.length - 1 === id && !isCode) {
-      return result;
+    if(data.length - 1 === id) {  // 是否是最后一个元素
+      if(isCode) {  // 当前是否已完成一次代码块，转换
+        return <MarkdownRenderer content={result}></MarkdownRenderer>;
+      } else {  // 当前正在显示代码块部分，不转换
+        return result;
+      } 
+    } else {  // 非当前item，默认转换
+      return <MarkdownRenderer content={result}></MarkdownRenderer>
     }
 
   }
