@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Input, InputRef, Popconfirm, Spin, Tooltip } from 'antd';
+import { Input, InputRef, message, Popconfirm, Spin, Tooltip } from 'antd';
 import { ClearOutlined, LoadingOutlined, RedoOutlined, SendOutlined, StopOutlined } from '@ant-design/icons';
 import '@/css/input.less';
 import { Context } from '@/pages/main'
@@ -23,7 +23,10 @@ export default function input() {
   }, [status])
   // 发送
   function sendMsg() {
-
+    if(!value) {
+      message.warn("请输入内容");
+      return;
+    }
     data.push({ question: value });
 
     dispatch({

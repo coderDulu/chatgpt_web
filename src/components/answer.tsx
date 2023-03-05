@@ -27,7 +27,7 @@ export default function answer({
 
     // 方案二
     if(data.length - 1 === id) {  // 是否是最后一个元素
-      if(isCode) {  // 当前是否已完成一次代码块，转换
+      if(isCode || !matchCount) {  // 当前是否已完成一次代码块，转换
         return <MarkdownRenderer content={result}></MarkdownRenderer>;
       } else {  // 当前正在显示代码块部分，不转换
         return result;
