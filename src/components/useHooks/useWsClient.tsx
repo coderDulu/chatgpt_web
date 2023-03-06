@@ -10,8 +10,8 @@ export default function useWsClient(): [WebSocket | null, string, boolean] {
   const { socket, isConnected, reconnect } = useWebSocket(`ws://${location.host}/socket`);
   const [result, setResult] = useState('');
   const timer = useRef<NodeJS.Timer>();
-  const delay = 2000;
-  const [status, setStatus] = useState(false);
+  const delay = 4000;
+  const [status, setStatus] = useState(false);  // 是否显示断开连接状态
 
   useEffect(() => {
     clearTimeout(timer.current);
