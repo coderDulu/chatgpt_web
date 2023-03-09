@@ -76,7 +76,7 @@ export const Context = React.createContext<any>(initState);
 export default function main() {
   const [state, dispatch] = useReducer(reducer, initState);
   const [wsClient, result, connectStatus] = useWsClient();
-  const delayRef = useRef(100);
+  const delayRef = useRef(0);
 
   // 防抖保存data
   const debounceCallback = useCallback(
@@ -89,7 +89,7 @@ export default function main() {
 
   // 节流显示markdown
   const throttleToData = useCallback(throttle((data: any[]) => {
-    requestAnimationFrame(() => setState({ data }))
+    setState({ data });
   }, delayRef.current), [delayRef.current])
 
   function setState(payload: Partial<stateType>) {
@@ -102,87 +102,91 @@ export default function main() {
   }
 
 
-// 处理接受的result
-useEffect(() => {
-  if (result === "end") {
-    setState({ status: 'ending' });
-    return;
-  }
+  // 处理接受的result
+  useEffect(() => {
+    if (result === "end") {
+      setState({ status: 'ending' });
+      return;
+    }
 
-  if (result) {
-    state.status !== 'running' && setState({ status: 'running' })
-    setLastData(result);
-  }
+    if (result) {
+      state.status !== 'running' && setState({ status: 'running' })
+      setLastData(result);
+    }
 
-}, [result])
+  }, [result])
 
-// 保存data
-useEffect(() => {
-  debounceCallback(state.data);
-}, [state.data])
+  // 保存data
+  useEffect(() => {
+    debounceCallback(state.data);
+  }, [state.data])
 
-// 设置result
-function setLastData(result: string) {
-  const { data } = state;
+  // 设置result
+  function setLastData(result: string) {
+    const { data } = state;
 
-  const length = data.length - 1 <= 0 ? 0 : data.length - 1;
-  const newData = JSON.parse(JSON.stringify(data));
+    const length = data.length - 1 <= 0 ? 0 : data.length - 1;
+    const newData = JSON.parse(JSON.stringify(data));
 
-  newData[length] = typeof data[length] === 'object' ? newData[length] : {};
-  newData[length].answer = result;
+    newData[length] = typeof data[length] === 'object' ? newData[length] : {};
+    newData[length].answer = result;
 
-  // 设置
-  const matchLength = result.match(/```/g)?.length;
-  if(matchLength) {
-    if(matchLength % 2 === 0) {
-      delayRef.current = 100
+    // 设置
+    const matchLength = result.match(/```/g)?.length;
+    if (matchLength) {
+      if (matchLength % 2 === 0) {
+        setState({ data: newData });
+      } else {
+        // delayRef.current = 1000
+        // throttleToData(newData)
+        newData[length].answer = result + "加载中...";
+        setState({data: newData})
+      }
     } else {
-      delayRef.current = 500
+      setState({ data: newData });
     }
+
   }
 
-  throttleToData(newData);
-}
+  // 设置滚动条自动滚动到底部
+  useEffect(() => {
+    const scrollEl = document.querySelector('.main')
+    const { scrollHeight } = scrollEl;
 
-// 设置滚动条自动滚动到底部
-useEffect(() => {
-  const scrollEl = document.querySelector('.main')
-  const { scrollHeight } = scrollEl;
+    scrollHeight && setTimeout(() => {
+      scrollEl?.scrollTo({
+        top: scrollHeight
+      })
+    }, 10);
+  }, [])
 
-  scrollHeight && setTimeout(() => {
-    scrollEl?.scrollTo({
-      top: scrollHeight
-    })
-  }, 10);
-}, [])
-
-return (
-  <Context.Provider value={{ state, dispatch, ws: wsClient }}>
-    {
-      connectStatus && <div className='main-span'>
-        <Spin spinning tip={<span className='main-span-tip'>"连接已断开重连中..."</span>} size="large" ></Spin>
-      </div>
-    }
-    <div className='main-container'>
-      <AutoScroll className="main">
-        {
-          state.data.length ? state.data.map((item: dataType, index: number) => {
-            return (
-              <div key={index}>
-                <Question id={index} text={item.question}></Question>
-                {
-                  <Answer id={index} result={item.answer}></Answer>
-                }
-              </div>
-            )
-          }) : <div className='main-tip'>在输入框中输入内容开始聊天 ψ(｀∇´)ψ</div>
-        }
-        {/* {
+  return (
+    <Context.Provider value={{ state, dispatch, ws: wsClient }}>
+      {
+        connectStatus && <div className='main-span'>
+          <Spin spinning tip={<span className='main-span-tip'>"连接已断开重连中..."</span>} size="large" ></Spin>
+        </div>
+      }
+      <div className='main-container'>
+        <AutoScroll className="main">
+          {
+            state.data.length ? state.data.map((item: dataType, index: number) => {
+              return (
+                <div key={index}>
+                  <Question id={index} text={item.question}></Question>
+                  {
+                    <Answer id={index} result={item.answer}></Answer>
+                  }
+                </div>
+              )
+            }) : <div className='main-tip'>在输入框中输入内容开始聊天 ψ(｀∇´)ψ</div>
+          }
+          {/* {
             Array(20).fill(0).map((item, index) => <div style={{height: 200}}>{index}</div>)
           } */}
-      </AutoScroll>
-    </div>
-    <InputContainer></InputContainer>
-  </Context.Provider>
-)
+        </AutoScroll>
+      </div>
+      <InputContainer></InputContainer>
+    </Context.Provider>
+  )
 }
