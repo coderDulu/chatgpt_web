@@ -76,7 +76,6 @@ export const Context = React.createContext<any>(initState);
 export default function main() {
   const [state, dispatch] = useReducer(reducer, initState);
   const [wsClient, result, connectStatus] = useWsClient();
-  const [showSpin, setShowSpin] = useState(false)
 
   // 防抖保存data
   const debounceCallback = useCallback(
@@ -101,12 +100,6 @@ export default function main() {
     })
   }
 
-  // 处理ws
-  useEffect(() => {
-
-    setShowSpin(connectStatus)
-
-  }, [connectStatus])
 
 // 处理接受的result
 useEffect(() => {

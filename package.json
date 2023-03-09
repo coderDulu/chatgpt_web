@@ -1,6 +1,6 @@
 {
   "name": "web-chatgpt",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "chatgpt web端",
   "main": "main.js",
   "author": "dudulu",

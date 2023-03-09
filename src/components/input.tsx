@@ -17,6 +17,7 @@ export default function input() {
   }, [])
 
   useEffect(() => {
+    // console.log(status);
     if (status === 'ending') {
       inputRef.current?.focus();
     }
