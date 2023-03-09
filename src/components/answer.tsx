@@ -23,10 +23,10 @@ export default function answer({
     const matchCount = result.match(/```/g);
     const isCode = matchCount ? matchCount.length % 2 === 0 : false; // 当前是否在输出js
     // 方案一
-    // return <MarkdownRenderer content={result} />
+    return <MarkdownRenderer content={result} />
     if(status === 'ending') {
       return <MarkdownRenderer content={result}/>;
-    } else if(status === "running" && data.length - 1 === id){
+    } else if(status === "running" && data.length - 1 === id && isCode){
       return result;
     } else {
       return <MarkdownRenderer content={result}></MarkdownRenderer>

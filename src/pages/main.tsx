@@ -27,7 +27,7 @@ const initState: stateType = {
   status: 'ending'
 }
 
-function throttle(func, delay) {
+function throttle(func: any, delay: number) {
   let timerId;
   return function (...args) {
     if (!timerId) {
@@ -39,7 +39,7 @@ function throttle(func, delay) {
   };
 }
 
-function debounce(func, delay) {
+function debounce(func: any, delay: number) {
   let timer;
   return function (...args) {
     clearTimeout(timer);
@@ -76,6 +76,7 @@ export const Context = React.createContext<any>(initState);
 export default function main() {
   const [state, dispatch] = useReducer(reducer, initState);
   const [wsClient, result, connectStatus] = useWsClient();
+  const delayRef = useRef(100);
 
   // 防抖保存data
   const debounceCallback = useCallback(
@@ -87,9 +88,9 @@ export default function main() {
   );
 
   // 节流显示markdown
-  const throttleToData = useCallback(debounce((data: any[]) => {
+  const throttleToData = useCallback(throttle((data: any[]) => {
     requestAnimationFrame(() => setState({ data }))
-  }, 500), [])
+  }, delayRef.current), [delayRef.current])
 
   function setState(payload: Partial<stateType>) {
     dispatch({
@@ -130,20 +131,17 @@ function setLastData(result: string) {
   newData[length] = typeof data[length] === 'object' ? newData[length] : {};
   newData[length].answer = result;
 
-  setState({ data: newData })
   // 设置
-  // const matchLength = result.match(/```/g)?.length
-  // if (matchLength) {
-  //   if (matchLength % 2 === 0) {
-  //     setState({ data: newData })
-  //   } else {
-  //     console.log(matchLength);
-  //     // 节流渲染
-  //     throttleToData(newData);
-  //   }
-  // } else {
-  //   setState({ data: newData })
-  // }
+  const matchLength = result.match(/```/g)?.length;
+  if(matchLength) {
+    if(matchLength % 2 === 0) {
+      delayRef.current = 100
+    } else {
+      delayRef.current = 500
+    }
+  }
+
+  throttleToData(newData);
 }
 
 // 设置滚动条自动滚动到底部
