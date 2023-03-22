@@ -7,16 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": resolve(__dirname, './src')
-    }
-  },
-  server: {
-    proxy: {
-      '/socket': {
-        target: "ws://167.88.186.119:3200",
-        ws: true
-      }
+      "@": resolve(__dirname, 'src')
     }
   }
 })
- 

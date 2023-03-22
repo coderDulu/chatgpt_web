@@ -1,14 +1,13 @@
-import React from 'react';
-import Main from './pages/main';
-
-
+import { useState } from 'react'
+import Main from './page/Main'
 
 function App() {
+
   return (
-    <div className="App">
+    <>
       <Main />
-    </div>
-  );
+    </>
+  )
 }
 
-export default App;
+export default App
