@@ -1,5 +1,5 @@
 import { debounce } from '@/utils/debounce';
-import WsClient from '@/utils/websocket';
+import WsClient from '@/utils/websocket.ts';
 import { message } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import useWebSocket from './useWebsocket';
