@@ -9,5 +9,13 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, 'src')
     }
+  },
+  server: {
+    proxy: {
+      "/socket": {
+        target: "ws://167.88.186.119:3200",
+        ws: true
+      }
+    }
   }
 })

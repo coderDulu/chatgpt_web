@@ -1,0 +1,87 @@
+.l-layout {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  overflow: hidden;
+}
+
+
+// menu
+.l-menu-list {
+  height: 100%;
+  max-width: 300px;
+  width: 300px;
+  margin-left: -1px;
+}
+
+// 小屏幕状态下隐藏
+.l-menu-navbar {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  background-color: #343541;
+  color: #d9d9e3;
+
+  line-height: 40px;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+
+  &-list {
+    cursor: pointer;
+  }
+
+  &-title {
+    flex: 1;
+    text-align: center;
+
+  }
+}
+
+// Main组件
+.l-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .l-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .l-c-tip {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+      letter-spacing: 4px;
+    }
+
+  }
+
+  .ant-menu-item {
+    text-align: center;
+    padding-left: 0 !important;
+  }
+}
+
+
+
+.l-drawer {
+  background-color: transparent !important;
+}
+
+.ant-drawer-content-wrapper {
+  width: 200px !important;
+}
+
+// 适应小屏
+@media screen and (max-width: 768px) {
+  .l-menu-navbar {
+    display: flex;
+  }
+}

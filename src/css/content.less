@@ -1,0 +1,62 @@
+@icon-size: 34px;
+
+
+.c-send,
+.c-receive {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  padding: 20px ;
+
+  &-context {
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+  }
+
+  &-icon {
+    width: @icon-size;
+    height: @icon-size;
+    min-width: @icon-size;
+    min-height: @icon-size;
+    background-color: #c11a5b;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  &-text {
+    height: 100px;
+    overflow: auto;
+    margin: 0 20px;
+    width: 100%;
+  }
+}
+
+.c-receive {
+  background-color: #f7f7f8;
+  // height: 120px;
+  &-icon {
+    background-color: #10a37f;
+
+    svg {
+      width: 70%;
+      height: 70%;
+      color: #fff;
+    }
+  }
+
+  &-text {
+    height: auto;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .c-container {
+    padding-top: 40px;
+  }
+}
