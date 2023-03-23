@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Drawer, Input, InputRef, message, Select } from 'antd'
-import { HistoryOutlined, SendOutlined } from '@ant-design/icons';
+import { Button, Drawer, Input, InputRef, message, Select, Tooltip } from 'antd'
+import { ClearOutlined, HistoryOutlined, RedoOutlined, SendOutlined } from '@ant-design/icons';
 import { useData } from '../hooks/useData';
 import '@/css/footer.less';
 
@@ -8,14 +8,13 @@ export default function Footer() {
   const inputRef = useRef<InputRef>(null);
   const [value, setValue] = useState('');
   const { state: { sendData }, wsClient, dispatch } = useData();
-
   const [showDrawer, setShowDrawer] = useState(false);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [])
 
-  function handleSend() {
+  function handleSend(value: string) {
     if (!value) {
       message.warning("请输入内容");
       return;
@@ -28,6 +27,7 @@ export default function Footer() {
     // 清空状态
     setValue('');
     inputRef.current?.focus();
+    showDrawer && setShowDrawer(false); // 隐藏
   }
 
 
@@ -50,57 +50,76 @@ export default function Footer() {
     wsClient.send(JSON.stringify({ text: sendData }));
   }
 
+  // 重发
+  function resend() {
+    sendData[sendData.length - 1].receive = ''
+    dispatch({
+      type: "set",
+      payload: {
+        sendData
+      }
+    })
+    sendDataToServer(sendData);
+  }
+  // 清空
+  function clearSend() {
+    dispatch({
+      type: "set",
+      payload: {
+        sendData: []
+      }
+    })
+  }
+
   return (
     <div className='l-footer'>
-      <Button className='l-footer-history' icon={<HistoryOutlined />} onClick={() => setShowDrawer(true)}></Button>
-      <Input value={value} ref={inputRef} onChange={(e) => setValue(e.target.value)} placeholder='请输入' onPressEnter={handleSend} />
-      {/* <Select
-      className='l-footer-history'
-        // showSearch
-        placeholder="Select a person"
-        optionFilterProp="children"
-        onChange={onChange}
-        onSearch={onSearch}
-        filterOption={(input, option) =>
-          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-        }
-        options={[
-          {
-            value: 'jack',
-            label: 'Jack',
-          },
-          {
-            value: 'lucy',
-            label: 'Lucy',
-          },
-          {
-            value: 'tom',
-            label: 'Tom',
-          },
-        ]}
-      /> */}
-      <Drawer title="历史记录" placement="left" onClose={() => setShowDrawer(false)} open={showDrawer}>
-        {
-          sendData.map((item, index) => <HistoryItem key={index} text={item.send}/>)
-        }
-      </Drawer>
+      {/* <div> */}
+      <div className='l-footer-utils'>
+        <Tooltip title="历史记录">
+          <Button className='l-utils-btn' icon={<HistoryOutlined />} onClick={() => setShowDrawer(true)}></Button>
+        </Tooltip>
+        <Tooltip title="重发">
+          <Button icon={<RedoOutlined />} onClick={resend} />
+        </Tooltip>
+        <Tooltip title="清空消息">
+          <Button icon={<ClearOutlined />} onClick={clearSend} />
+        </Tooltip>
+      </div>
+      <Input value={value} ref={inputRef} onChange={(e) => setValue(e.target.value)} placeholder='请输入' onPressEnter={e => handleSend(value)} suffix={<SendOutlined />} />
+      {/* </div> */}
 
-      <SendOutlined className='l-footer-icon' onClick={handleSend} />
+      <Drawer title="历史记录" className='l-footer-drawer' placement="left" onClose={() => setShowDrawer(false)} open={showDrawer}>
+        <div className='l-footer-h-list'>
+          {
+            sendData.map((item, index) => <HistoryItem handleResend={handleSend} key={index} text={item.send} />)
+          }
+        </div>
+      </Drawer>
     </div>
   )
 }
 
 function HistoryItem({
-  text
+  text,
+  handleResend
 }: {
-  text: string
+  text: string;
+  handleResend: (text: string) => void;
 }) {
+  const { state: { sendData }, dispatch } = useData();
+
+  // 重发历史消息
+  function resendHistory(text: string) {
+    
+  }
 
 
   return (
     <div className='l-footer-listItem'>
       <span>{text}</span>
-      <SendOutlined className='l-footer-history-icon'/>
+      <Tooltip title="发送">
+        <SendOutlined className='l-footer-listItem-icon' onClick={() => handleResend(text)} />
+      </Tooltip>
     </div>
   )
 }

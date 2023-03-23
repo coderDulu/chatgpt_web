@@ -28,7 +28,8 @@ export default function content() {
         }
       })
     } else {
-      // localStorage.set('sendData', sendData);
+      localStorage.set('sendData', sendData);
+      receiveRef.current = "";
     }
   }, [receiveData])
 
