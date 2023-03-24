@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import React, { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 // @ts-ignore
@@ -36,4 +37,39 @@ export const useMarkDown = ({ content }: { content: string }) => {
   >
     {content}
   </ReactMarkdown>
+}
+
+/**
+ * 为每个代码块添加复制按钮
+ */
+export function addCopyToPre() {
+  const codeBlocks = document.querySelectorAll('pre');
+
+  codeBlocks.forEach((codeEl) => {
+    codeEl.className = 'code-pre';
+
+    if (codeEl.lastChild?.nodeName === 'CODE') {
+      const btnEl = document.createElement('button');
+      btnEl.className = "code-copy";
+      btnEl.textContent = "复制";
+
+      codeEl.appendChild(btnEl);
+      // @ts-ignore
+      const value = codeEl.children[0].innerText;
+      btnEl.onclick = btnClick(value);
+    }
+
+  })
+
+  function btnClick(value: string) {
+    return (e: MouseEvent) => {
+      navigator.clipboard.writeText(value)
+        .then(() => {
+          message.success('复制成功')
+        })
+        .catch((error) => {
+          console.error("Failed to copy message to clipboard: ", error);
+        });
+    }
+  }
 }

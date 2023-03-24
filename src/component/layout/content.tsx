@@ -7,7 +7,7 @@ import '@/css/content.less';
 import AutoScroll from 'du-autoscroll';
 import 'du-autoscroll/lib/dist/index.css'
 import localStorage from '@/utils/storage/localStorage';
-import { addCopyToPre } from '../hooks/useMarked';
+import { addCopyToPre } from '../hooks/useMarkDown';
 import useDebounce from '../hooks/useDebounce';
 
 
