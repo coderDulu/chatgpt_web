@@ -27,8 +27,6 @@ export default function content() {
       receiveRef.current += receiveData;
       sendData[len].receive = receiveRef.current;
 
-      console.log(receiveData);
-
       dispatch({
         type: "set",
         payload: {
@@ -36,10 +34,11 @@ export default function content() {
         }
       })
     } else {
+      // console.log(receiveRef.current);
       receiveRef.current = "";
       setTimeout(() => {
         addCopyToPre()
-      }, 500);
+      }, 1000);
     }
   }, [receiveData])
 
@@ -64,7 +63,7 @@ function SessionItem({ data }: { data: { send: string; receive: string }[] }) {
         data.map((item, key) => {
           return <div key={key} className='c-container'>
             <Question id={key} text={item.send} />
-            <Answer text={item.receive.trimStart().replace(/\s$/g, "")} />
+            <Answer text={item.receive.replace(/^\s*$(?:\r\n?|\n)/gm, '')} />
           </div>
         })
       }
