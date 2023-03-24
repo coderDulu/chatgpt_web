@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": resolve(__dirname, 'src')
+      "@": path.resolve(__dirname, 'src'),
+      'antd/dist/reset.css': path.join(__dirname, 'node_modules/antd/dist/reset.css'),  // <-- add this
+      antd: path.join(__dirname, 'node_modules/antd/dist/antd.js'),
+      '@ant-design/icons': path.join(__dirname, 'node_modules/@ant-design/icons/dist/index.umd.js'),
     }
   },
   server: {

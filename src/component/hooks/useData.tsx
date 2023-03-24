@@ -27,7 +27,7 @@ interface ContextProps {
 
 interface ActionProps {
   type: string;
-  payload: Partial<StateProps>
+  payload: any
 }
 
 // 初始化数据
@@ -44,6 +44,11 @@ const reducer = (state: StateProps, action: ActionProps) => {
       return {
         ...state,
         ...action.payload
+      }
+    case "del":
+      state.sendData.splice(action.payload.id, 1);
+      return {
+        ...state
       }
     default:
       return state

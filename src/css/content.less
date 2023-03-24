@@ -36,6 +36,11 @@
   }
 }
 
+.c-send-text {
+  height: auto;
+  max-height: 200px;
+}
+
 .c-receive {
   background-color: #f7f7f8;
   // height: 120px;
@@ -54,9 +59,27 @@
   }
 }
 
+.c-send-clear {
+  cursor: pointer;
+}
 
+// 复制按钮
+.code-copy {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: orange;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 12px;
+}
+.code-pre {
+  position: relative;
+}
+
+// 适应小屏
 @media screen and (max-width: 768px) {
-  .c-container {
-    padding-top: 40px;
+  .l-menu-navbar {
+    display: flex;
   }
 }

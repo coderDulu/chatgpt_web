@@ -8,3 +8,9 @@ git clone git@github.com:coderDulu/react-ts.git
 
 ## 启动
 #### pnpm dev
+
+
+#### v1.0.0
+* 新增工具栏操作
+* 优化显示
+* 重写整体页面

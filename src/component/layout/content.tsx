@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom';
 import Answer from '../content/Answer';
 import Question from '../content/Question';
 import { useData } from '../hooks/useData';
@@ -6,6 +7,8 @@ import '@/css/content.less';
 import AutoScroll from 'du-autoscroll';
 import 'du-autoscroll/lib/dist/index.css'
 import localStorage from '@/utils/storage/localStorage';
+import { addCopyToPre } from '../hooks/useMarked';
+import useDebounce from '../hooks/useDebounce';
 
 
 export default function content() {
@@ -13,6 +16,10 @@ export default function content() {
   const { sendData } = state;
   const { receiveData } = wsClient;
   const receiveRef = useRef('');
+
+  const saveSendData = useDebounce((data) => {
+    localStorage.set('sendData', data);
+  } , 500);
 
   useEffect(() => {
     if (!/^end$/.test(receiveData) && sendData.length && receiveData) {
@@ -28,10 +35,16 @@ export default function content() {
         }
       })
     } else {
-      localStorage.set('sendData', sendData);
       receiveRef.current = "";
+      setTimeout(() => {
+        addCopyToPre()
+      }, 500);
     }
   }, [receiveData])
+
+  useEffect(() => {
+    saveSendData(...sendData);
+  }, [sendData])
 
 
   return (
@@ -49,7 +62,7 @@ function SessionItem({ data }: { data: { send: string; receive: string }[] }) {
       {
         data.map((item, key) => {
           return <div key={key} className='c-container'>
-            <Question text={item.send} />
+            <Question id={key} text={item.send} />
             <Answer text={item.receive.trimStart()} />
           </div>
         })

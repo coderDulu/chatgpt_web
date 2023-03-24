@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Drawer, Input, InputRef, message, Select, Tooltip } from 'antd'
-import { ClearOutlined, HistoryOutlined, RedoOutlined, SendOutlined } from '@ant-design/icons';
+import { ClearOutlined, CompassOutlined, HistoryOutlined, RedoOutlined, SendOutlined } from '@ant-design/icons';
 import { useData } from '../hooks/useData';
 import '@/css/footer.less';
+import DrawerList from '../common/drawer';
 
 export default function Footer() {
   const inputRef = useRef<InputRef>(null);
@@ -30,7 +31,10 @@ export default function Footer() {
     showDrawer && setShowDrawer(false); // 隐藏
   }
 
-
+  /**
+   * // 下发消息到服务器
+   * @param data 
+   */
   function sendDataToServer(data: any[]) {
     let sendData: {
       role: string,
@@ -73,11 +77,11 @@ export default function Footer() {
 
   return (
     <div className='l-footer'>
-      {/* <div> */}
+      {/* 工具栏 */}
       <div className='l-footer-utils'>
-        <Tooltip title="历史记录">
-          <Button className='l-utils-btn' icon={<HistoryOutlined />} onClick={() => setShowDrawer(true)}></Button>
-        </Tooltip>
+        <CallList send={handleSend}  />
+        <HistoryList resend={resend} list={sendData} />
+
         <Tooltip title="重发">
           <Button icon={<RedoOutlined />} onClick={resend} />
         </Tooltip>
@@ -85,41 +89,50 @@ export default function Footer() {
           <Button icon={<ClearOutlined />} onClick={clearSend} />
         </Tooltip>
       </div>
+      {/* 输入框 */}
       <Input value={value} ref={inputRef} onChange={(e) => setValue(e.target.value)} placeholder='请输入' onPressEnter={e => handleSend(value)} suffix={<SendOutlined />} />
-      {/* </div> */}
-
-      <Drawer title="历史记录" className='l-footer-drawer' placement="left" onClose={() => setShowDrawer(false)} open={showDrawer}>
-        <div className='l-footer-h-list'>
-          {
-            sendData.map((item, index) => <HistoryItem handleResend={handleSend} key={index} text={item.send} />)
-          }
-        </div>
-      </Drawer>
     </div>
   )
 }
 
-function HistoryItem({
-  text,
-  handleResend
+// 历史记录组件
+function HistoryList({
+  list,
+  resend
 }: {
-  text: string;
-  handleResend: (text: string) => void;
+  list: any[];
+  resend: (text: string) => void;
 }) {
-  const { state: { sendData }, dispatch } = useData();
-
-  // 重发历史消息
-  function resendHistory(text: string) {
-    
+  function handleResend(item: any) {
+    resend(item.send);
   }
 
-
-  return (
-    <div className='l-footer-listItem'>
-      <span>{text}</span>
-      <Tooltip title="发送">
-        <SendOutlined className='l-footer-listItem-icon' onClick={() => handleResend(text)} />
-      </Tooltip>
-    </div>
-  )
+  return <DrawerList tooltip='历史记录' icon={<HistoryOutlined />} list={list} showVal="send" handleResend={handleResend} />
 }
+
+// 快捷菜单组件
+function CallList({
+  send
+}: { send: (value: string) => void }) {
+  const list = [
+    {
+      title: "获取图片",
+      value: "从现在起, 当你想发送一张照片时，请使用 Markdown ,并且 不要有反斜线, 不要用代码块。使用 Unsplash API (https://source.unsplash.com/500x0/? < PUT YOUR QUERY HERE >)。如果你明白了，请回复“明白”。",
+      description: ""
+    },
+    {
+      title: "代码格式更正",
+      value: "你的回答里代码格式不正确",
+    }
+  ]
+
+  function handleResend(item: any) {
+    console.log(item.value);
+    send(item.value);
+  }
+
+  return <>
+    <DrawerList tooltip='快捷指令' icon={<CompassOutlined />} list={list} handleResend={handleResend} showVal="title" />
+  </>
+}
+

@@ -1,0 +1,60 @@
+// menu
+.l-menu-list {
+  height: 100%;
+  max-width: 250px;
+  width: 200px;
+  margin-left: -1px;
+}
+
+// 小屏幕状态下隐藏
+.l-menu-navbar {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  background-color: #343541;
+  color: #d9d9e3;
+  z-index: 999;
+
+  line-height: 40px;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+
+  &-list {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &-title {
+    flex: 1;
+    text-align: center;
+
+  }
+}
+
+.menu-list {
+  height: 100%;
+  display: flex;
+  position: relative;
+
+  &-icon {
+    right: -20%;
+    top: -1px;
+    position: absolute;
+    background-color: #001529;
+    color: #fff;
+    cursor: pointer;
+    z-index: 999;
+    border-radius: 0;
+    border-color:#001529 ;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .c-container {
+    padding-top: 40px;
+  }
+}
