@@ -1,12 +1,30 @@
 @icon-size: 34px;
 
+.l-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .l-c-tip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+    letter-spacing: 4px;
+    animation: show-text 2s ease-in-out forwards;
+  }
+
+}
 
 .c-send,
 .c-receive {
   width: 100%;
   margin: 0 auto;
   display: flex;
-  padding: 20px ;
+  padding: 20px;
 
   &-context {
     margin: 0 auto;
@@ -43,6 +61,7 @@
 
 .c-receive {
   background-color: #f7f7f8;
+
   // height: 120px;
   &-icon {
     background-color: #10a37f;
@@ -73,13 +92,29 @@
   padding: 5px;
   font-size: 12px;
 }
+
 .code-pre {
   position: relative;
 }
+
 
 // 适应小屏
 @media screen and (max-width: 768px) {
   .l-menu-navbar {
     display: flex;
+  }
+
+  .c-container {
+    padding-top: 40px;
+  }
+}
+
+@keyframes show-text {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
