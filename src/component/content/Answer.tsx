@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import '@/css/content.less';
-import MarkdownRenderer from '@/component/hooks/useMarked';
 import { useMarkDown } from '@/component/hooks/useMarkDown';
 
 export default function Answer({
   text
 }: { text: string; }) {
-  const renderHtml = MarkdownRenderer({ content: text });
   const html = useMarkDown({ content: text });
   // console.log(html);
   return (

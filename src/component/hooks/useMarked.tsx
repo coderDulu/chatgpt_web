@@ -24,10 +24,6 @@ export default function MarkdownRenderer({ content }: { content: string }) {
   return html;
 }
 
-function MarkdownOfCode() {
-  
-}
-
 
 /**
  * 为每个代码块添加复制按钮
