@@ -10,7 +10,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, 'src'),
       'antd/dist/reset.css': path.join(__dirname, 'node_modules/antd/dist/reset.css'),  // <-- add this
       "antd": path.join(__dirname, 'node_modules/antd/dist/antd.js'),
-      '@ant-design/icons': path.join(__dirname, 'node_modules/@ant-design/icons/dist/index.umd.js'),
+      '@ant-design/icons': path.join(__dirname, 'node_modules\\@ant-design\\icons\\lib\\index.js'),
       'react-syntax-highlighter/dist/cjs/styles/prism': path.join(__dirname, 'node_modules/react-syntax-highlighter/dist/cjs/styles/prism/index.js'),
       'react-syntax-highlighter': path.join(__dirname, 'node_modules/react-syntax-highlighter/dist/cjs/index.js'),
     }
