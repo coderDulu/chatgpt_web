@@ -124,7 +124,7 @@ function CallList({
     {
       title: "获取图片",
       // value: `从现在起, 当你想发送一张照片时，请使用 Markdown ,并且 不要有反斜线, 不要用代码块。使用 Unsplash API ![Image](https://source.unsplash.com/${window.screen.width / 2}x${window.screen.height / 2}/? < PUT YOUR QUERY HERE >)。如果你明白了，请回复“明白”。`,
-      value: `现在起，当我想要你发送照片，图片时，用3/8Markdown 写，不要有反斜线，不要用代码块。使用 Unsplash API(![]https://source.unsplash.com/${window.screen.width / 4}x${window.screen.height / 4}< PUT YOUR QUERY HERE >)。如果听懂了请回复明白，以后都需要这样。`,
+      value: `现在起，当我想要你发送照片，图片时，用3/8Markdown 写，不要有反斜线，不要用代码块。使用 Unsplash API(![]https://source.unsplash.com/${(window.screen.width / 3).toFixed(0)}x${(window.screen.height / 3).toFixed(0)}< PUT YOUR QUERY HERE >)。如果听懂了请回复明白，以后都需要这样。`,
       description: ""
     },
     {

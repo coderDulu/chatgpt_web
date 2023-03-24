@@ -1,6 +1,8 @@
 import { SendOutlined } from '@ant-design/icons';
 import { Button, Drawer, Tooltip } from 'antd'
 import React, { useState } from 'react'
+import '@/css/drawerList.less'
+import AutoScroll from 'du-autoscroll';
 
 interface PropsType {
   list: any[];
@@ -51,7 +53,7 @@ function DrawerItem({
 }) {
   return (
     <div className='l-footer-listItem'>
-      <span>{text}</span>
+      <AutoScroll className='drawer-text'>{text}</AutoScroll>
       <Tooltip title="发送">
         <SendOutlined className='l-footer-listItem-icon' onClick={() => handleResend(text)} />
       </Tooltip>

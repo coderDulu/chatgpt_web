@@ -18,6 +18,7 @@ const useWebSocket = (url: string, reconnectTimes: number = 10) => {
     };
 
     newSocket.onmessage = (event) => {
+      // console.log(event.data);
       setReceiveData(event.data);
     }
 
