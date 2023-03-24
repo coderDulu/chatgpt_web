@@ -4,6 +4,7 @@ import hljs, { HighlightOptions } from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import { message } from 'antd';
 
+
 export default function MarkdownRenderer({ content }: { content: string }) {
   const [html, setHtml] = useState('');
 
@@ -22,6 +23,11 @@ export default function MarkdownRenderer({ content }: { content: string }) {
   // return <div dangerouslySetInnerHTML={{ __html: html }} />;
   return html;
 }
+
+function MarkdownOfCode() {
+  
+}
+
 
 /**
  * 为每个代码块添加复制按钮
@@ -57,3 +63,4 @@ export function addCopyToPre() {
     }
   }
 }
+

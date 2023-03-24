@@ -79,7 +79,7 @@ export default function Footer() {
     <div className='l-footer'>
       {/* 工具栏 */}
       <div className='l-footer-utils'>
-        <CallList send={handleSend}  />
+        <CallList send={handleSend} />
         <HistoryList resend={resend} list={sendData} />
 
         <Tooltip title="重发">
@@ -90,7 +90,13 @@ export default function Footer() {
         </Tooltip>
       </div>
       {/* 输入框 */}
-      <Input value={value} ref={inputRef} onChange={(e) => setValue(e.target.value)} placeholder='请输入' onPressEnter={e => handleSend(value)} suffix={<SendOutlined />} />
+      <Input
+        value={value}
+        ref={inputRef}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder='请输入'
+        onPressEnter={e => handleSend(value)}
+        suffix={<SendOutlined className='l-footer-icon' onClick={() => handleSend(value)} />} />
     </div>
   )
 }
@@ -117,7 +123,7 @@ function CallList({
   const list = [
     {
       title: "获取图片",
-      value: "从现在起, 当你想发送一张照片时，请使用 Markdown ,并且 不要有反斜线, 不要用代码块。使用 Unsplash API (https://source.unsplash.com/720x512/? < PUT YOUR QUERY HERE >)。如果你明白了，请回复“明白”。",
+      value: `从现在起, 当你想发送一张照片时，请使用 Markdown ,并且 不要有反斜线, 不要用代码块。使用 Unsplash API (https://source.unsplash.com/${window.screen.width / 2}x${window.screen.height / 2}/? < PUT YOUR QUERY HERE >)。如果你明白了，请回复“明白”。`,
       description: ""
     },
     {
