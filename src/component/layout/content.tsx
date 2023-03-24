@@ -25,8 +25,9 @@ export default function content() {
     if (!/^end$/.test(receiveData) && sendData.length && receiveData) {
       const len = sendData.length - 1;
       receiveRef.current += receiveData;
-
       sendData[len].receive = receiveRef.current;
+
+      console.log(receiveData);
 
       dispatch({
         type: "set",
@@ -63,7 +64,7 @@ function SessionItem({ data }: { data: { send: string; receive: string }[] }) {
         data.map((item, key) => {
           return <div key={key} className='c-container'>
             <Question id={key} text={item.send} />
-            <Answer text={item.receive.trimStart()} />
+            <Answer text={item.receive.trimStart().replace(/\s$/g, "")} />
           </div>
         })
       }
