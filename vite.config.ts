@@ -31,11 +31,6 @@ export default defineConfig({
     rollupOptions: {
       cache: true,
       treeshake: true,
-      // output: {
-      //   manualChunks(id) {
-          
-      //   }
-      // }
     }
   }
 })
