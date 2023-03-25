@@ -15,6 +15,7 @@ const useWebSocket = (url: string, reconnectTimes: number = 10) => {
 
     newSocket.onclose = () => {
       setIsConnected(false);
+      reconnect();
     };
 
     newSocket.onmessage = (event) => {

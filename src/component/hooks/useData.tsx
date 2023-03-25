@@ -6,6 +6,7 @@ interface StateProps {
   sendData: SendProps[];
   lastSend: string;
   lastReceive: string;
+  status: 'run' | 'end'
 }
 
 interface SendProps {
@@ -35,7 +36,8 @@ const initState: StateProps = {
   // sendData: [{send: "你好".repeat(1), receive: '你好，有什么可以帮助的吗？'.repeat(100)}, ],
   sendData: localStorage.get('sendData') ?? [],
   lastSend: '',
-  lastReceive: ''
+  lastReceive: '',
+  status: 'end'
 }
 // 创建reducer
 const reducer = (state: StateProps, action: ActionProps) => {

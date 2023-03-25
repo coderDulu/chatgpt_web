@@ -9,36 +9,52 @@ import 'du-autoscroll/lib/dist/index.css'
 import localStorage from '@/utils/storage/localStorage';
 import { addCopyToPre } from '../hooks/useMarkDown';
 import useDebounce from '../hooks/useDebounce';
-
+import { parseJSON } from '@/utils/json';
 
 export default function content() {
   const { state, wsClient, dispatch } = useData();
-  const { sendData } = state;
+  const { sendData, status } = state;
   const { receiveData } = wsClient;
   const receiveRef = useRef('');
 
   const saveSendData = useDebounce((data) => {
     localStorage.set('sendData', data);
-  } , 500);
+  }, 500);
 
   useEffect(() => {
-    if (!/^end$/.test(receiveData) && sendData.length && receiveData) {
-      const len = sendData.length - 1;
-      receiveRef.current += receiveData;
-      sendData[len].receive = receiveRef.current;
-
-      dispatch({
-        type: "set",
-        payload: {
-          sendData: [...sendData]
-        }
-      })
-    } else {
-      // console.log(receiveRef.current);
+    if (status === "end") {
       receiveRef.current = "";
       setTimeout(() => {
         addCopyToPre()
       }, 1000);
+    }
+  }, [status])
+
+  useEffect(() => {
+    const { type, value } = parseJSON(receiveData) ?? {};
+    switch (type) {
+      case "answer": {
+        if (sendData.length) {
+          const len = sendData.length - 1;
+          receiveRef.current += value;
+          sendData[len].receive = receiveRef.current;
+
+          dispatch({
+            type: "set",
+            payload: {
+              sendData: [...sendData]
+            }
+          })
+        }
+        if (status === "end") {
+          dispatch({ type: "set", payload: { status: "run" } })
+        }
+      }
+      case "status": {
+        if (value === "end") {
+          dispatch({ type: "set", payload: { status: "end" } })
+        }
+      }
     }
   }, [receiveData])
 

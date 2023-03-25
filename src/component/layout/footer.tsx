@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Drawer, Input, InputRef, message, Select, Tooltip } from 'antd'
-import { ClearOutlined, CompassOutlined, HistoryOutlined, RedoOutlined, SendOutlined } from '@ant-design/icons';
+import { ClearOutlined, CompassOutlined, HistoryOutlined, LoadingOutlined, RedoOutlined, SendOutlined } from '@ant-design/icons';
 import { useData } from '../hooks/useData';
 import '@/css/footer.less';
 import DrawerList from '../common/drawer';
+import { stringifyJSON } from '@/utils/json';
 
 export default function Footer() {
   const inputRef = useRef<InputRef>(null);
   const [value, setValue] = useState('');
-  const { state: { sendData }, wsClient, dispatch } = useData();
+  const { state: { sendData, status }, wsClient, dispatch } = useData();
   const [showDrawer, setShowDrawer] = useState(false);
 
   useEffect(() => {
@@ -75,6 +76,18 @@ export default function Footer() {
     })
   }
 
+  // 停止接收消息
+  function stopReceiveData() {
+    const data = {
+      type: "status",
+      value: "stop"
+    }
+    const stringifyData = stringifyJSON(data)
+    stringifyData && wsClient.send(stringifyData);
+
+    dispatch({ type: "set", payload: { status: "end" } })
+  }
+
   return (
     <div className='l-footer'>
       {/* 工具栏 */}
@@ -96,7 +109,7 @@ export default function Footer() {
         onChange={(e) => setValue(e.target.value)}
         placeholder='请输入'
         onPressEnter={e => handleSend(value)}
-        suffix={<SendOutlined className='l-footer-icon' onClick={() => handleSend(value)} />} />
+        suffix={status === "end" ? <SendOutlined className='l-footer-icon' onClick={() => handleSend(value)} /> : <LoadingOutlined className='l-footer-icon' onClick={stopReceiveData} />} />
     </div>
   )
 }

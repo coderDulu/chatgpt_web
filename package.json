@@ -1,7 +1,7 @@
 {
   "name": "my-vue-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
+  "keywords": ["chatgpt", "web", "node", "openai", "gpt"],
   "devDependencies": {
     "@ant-design/icons": "^5.0.1",
     "@types/marked": "^4.0.8",

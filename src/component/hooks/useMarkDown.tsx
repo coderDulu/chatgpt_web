@@ -31,7 +31,7 @@ export const useMarkDown = ({ content }: { content: string }) => {
   return <ReactMarkdown
     components={{
       code({ node, inline, className, children, ...props }) {
-        return CodeBlock({className, children, inline, props})
+        return CodeBlock({ className, children, inline, props })
       }
     }}
   >
@@ -57,21 +57,38 @@ export function addCopyToPre() {
       codeEl.appendChild(btnEl);
       // @ts-ignore
       const value = codeEl.children[0].innerText;
-
-      btnEl.onclick = btnClick(value?.replace(/^\d{1, 4}/, ''));
+      btnEl.onclick = btnClick(value?.replace(/^\d+/gm, ''));
     }
 
   })
 
   function btnClick(value: string) {
-    return (e: MouseEvent) => {
-      navigator.clipboard.writeText(value)
-        .then(() => {
-          message.success('复制成功')
-        })
-        .catch((error) => {
-          console.error("Failed to copy message to clipboard: ", error);
-        });
+    return (e: MouseEvent | TouchEvent) => {
+      // navigator.clipboard.writeText(value)
+      //   .then(() => {
+      //     message.success('复制成功')
+      //   })
+      //   .catch((error) => {
+      //     console.error("Failed to copy message to clipboard: ", error);
+      //   });
+      copyText(value);
     }
   }
+}
+
+
+function copyText(text: string) {
+  var textarea = document.createElement('textarea');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = "0";
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    message.success('复制成功')
+  } catch (err) {
+    console.error("Failed to copy message to clipboard: ", err);
+  }
+  document.body.removeChild(textarea);
 }

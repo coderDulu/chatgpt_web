@@ -18,7 +18,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/socket": {
-        target: "ws://167.88.186.119:3200",
+        target: "ws://127.0.0.1:3200",
         ws: true
       }
     }
@@ -28,9 +28,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/.pnpm/')[1].split('/')[0].toString();
-          }
+          // if (id.includes('node_modules')) {
+          //   return id.toString().split('node_modules/.pnpm/')[1].split('/')[0].toString();
+          // }
         }
       }
     }
