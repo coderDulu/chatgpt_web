@@ -12,7 +12,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "keywords": ["chatgpt", "web", "node", "openai", "gpt"],
+  "keywords": [
+    "chatgpt",
+    "web",
+    "node",
+    "openai",
+    "gpt"
+  ],
   "devDependencies": {
     "@ant-design/icons": "^5.0.1",
     "@types/marked": "^4.0.8",
@@ -28,6 +34,7 @@
     "react-markdown": "^8.0.6",
     "react-syntax-highlighter": "^15.5.0",
     "typescript": "^4.9.3",
-    "vite": "^4.2.0"
+    "vite": "^4.2.0",
+    "vite-plugin-compression": "^0.5.1"
   }
 }

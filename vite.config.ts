@@ -1,10 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import viteCompression from 'vite-plugin-compression'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin(), viteCompression()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, 'src'),
@@ -23,16 +25,17 @@ export default defineConfig({
       }
     }
   },
+
   build: {
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          // if (id.includes('node_modules')) {
-          //   return id.toString().split('node_modules/.pnpm/')[1].split('/')[0].toString();
-          // }
-        }
-      }
+      cache: true,
+      treeshake: true,
+      // output: {
+      //   manualChunks(id) {
+          
+      //   }
+      // }
     }
   }
 })
