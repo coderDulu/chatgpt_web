@@ -32,6 +32,7 @@ export default function content() {
 
   useEffect(() => {
     const { type, value } = parseJSON(receiveData) ?? {};
+
     switch (type) {
       case "answer": {
         if (sendData.length) {
@@ -49,11 +50,13 @@ export default function content() {
         if (status === "end") {
           dispatch({ type: "set", payload: { status: "run" } })
         }
+        break;
       }
       case "status": {
         if (value === "end") {
           dispatch({ type: "set", payload: { status: "end" } })
         }
+        break;
       }
     }
   }, [receiveData])
