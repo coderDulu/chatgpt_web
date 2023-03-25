@@ -85,7 +85,9 @@ export default function Footer() {
     const stringifyData = stringifyJSON(data)
     stringifyData && wsClient.send(stringifyData);
 
-    dispatch({ type: "set", payload: { status: "end" } })
+    setTimeout(() => {
+      dispatch({ type: "set", payload: { status: "end" } })
+    }, 200);
   }
 
   return (
