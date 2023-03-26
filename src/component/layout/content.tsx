@@ -82,7 +82,8 @@ function SessionItem({ data }: { data: { send: string; receive: string }[] }) {
         data.map((item, key) => {
           return <div key={key} className='c-container'>
             <Question id={key} text={item.send} />
-            <Answer text={item.receive.replace(/^\s*$(?:\r\n?|\n)/gm, '')} />
+            {/* <Answer text={item.receive.replace(/^\s*$(?:\r\n?|\n)/gm, '')} /> */}
+            <Answer text={item.receive} />
           </div>
         })
       }
