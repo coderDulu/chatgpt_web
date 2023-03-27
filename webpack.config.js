@@ -121,6 +121,24 @@ module.exports = {
       test: /\.(js|css|html|ts|tsx)$/,
       minRatio: 0.8
     }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./public"),
+          to: path.resolve(__dirname, "./dist"),
+          toType: "dir",
+          noErrorOnMissing: true, // 不生成错误
+          globOptions: {
+            // 忽略文件
+            ignore: ["**/index.html"],
+          },
+          info: {
+            // 跳过terser压缩js
+            minimized: true,
+          },
+        },
+      ],
+    }),
     !isProduction && new ReactRefreshWebpackPlugin(), // 解决js的HMR功能运行时全局变量的问题
     new MiniCssExtractPlugin({
       filename: "assets/css/[name].css"
