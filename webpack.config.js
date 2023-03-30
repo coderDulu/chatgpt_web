@@ -100,7 +100,7 @@ module.exports = {
     hot: true,
     proxy: {
       "/socket": {
-        target: "ws://167.88.186.119:3200",
+        target: "ws://127.0.0.1:3200",
         ws: true
       }
     }

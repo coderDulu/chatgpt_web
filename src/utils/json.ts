@@ -1,6 +1,10 @@
 export function parseJSON(jsonStr: string) {
   try {
-    return JSON.parse(jsonStr);
+    if(jsonStr) {
+      return JSON.parse(jsonStr);
+    } else {
+      return null;
+    }
   } catch (e) {
     console.error(`JSON解析错误：${e}`);
     return null;

@@ -8,8 +8,8 @@ import { a11yDark as codeStyle } from 'react-syntax-highlighter/dist/cjs/styles/
 
 const CodeBlock = (config: any) => {
   const { inline, className, children, props } = config;
-  const match = /language-(\w+)/.exec(className || '');
-  
+  const match = /language-(\w+)/.exec(className || '') ?? ['javascript'];
+  console.log(match);
   return !inline && match ? (
     <SyntaxHighlighter
       showLineNumbers={true}
@@ -49,7 +49,7 @@ export function addCopyToPre() {
     codeEl.className = 'code-pre';
     const divEl = codeEl.childNodes[0];
 
-    if (divEl.lastChild?.nodeName === 'CODE') {
+    if (divEl.lastChild?.nodeName === 'CODE' || divEl.nodeName === "CODE") {
       const btnEl = document.createElement('button');
       btnEl.className = "code-copy";
       btnEl.textContent = "复制";

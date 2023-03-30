@@ -8,7 +8,7 @@ import AutoScroll from 'du-autoscroll';
 import 'du-autoscroll/lib/dist/index.css'
 import localStorage from '@/utils/storage/localStorage';
 import { addCopyToPre } from '../hooks/useMarkDown';
-import useDebounce from '../hooks/useDebounce';
+import useDebounce, { useThrottle } from '../hooks/useDebounce';
 import { parseJSON } from '@/utils/json';
 
 export default function content() {
@@ -17,6 +17,8 @@ export default function content() {
   const { receiveData } = wsClient;
   const receiveRef = useRef('');
 
+
+
   const saveSendData = useDebounce((data) => {
     localStorage.set('sendData', data);
   }, 500);
@@ -24,6 +26,7 @@ export default function content() {
   useEffect(() => {
     if (status === "end") {
       receiveRef.current = "";
+      
       setTimeout(() => {
         addCopyToPre()
       }, 1000);
@@ -36,16 +39,10 @@ export default function content() {
     switch (type) {
       case "answer": {
         if (sendData.length) {
-          const len = sendData.length - 1;
           receiveRef.current += value;
-          sendData[len].receive = receiveRef.current;
 
-          dispatch({
-            type: "set",
-            payload: {
-              sendData: [...sendData]
-            }
-          })
+          const len = sendData.length - 1;
+          sendData[len].receive = receiveRef.current;
         }
         if (status === "end") {
           dispatch({ type: "set", payload: { status: "run" } })
@@ -54,7 +51,7 @@ export default function content() {
       }
       case "status": {
         if (value === "end") {
-          dispatch({ type: "set", payload: { status: "end" } })
+          dispatch({ type: "set", payload: { status: "end", sendData: [...sendData] } })
         }
         break;
       }
