@@ -8,7 +8,8 @@ import { a11yDark as codeStyle } from 'react-syntax-highlighter/dist/cjs/styles/
 
 const CodeBlock = (config: any) => {
   const { inline, className, children, props } = config;
-  const match = /language-(\w+)/.exec(className || '') ?? ['javascript'];
+  const match = /language-(\w+)/.exec(className || '') ?? ['language-javascript', 'javascript'];
+
   return !inline && match ? (
     <SyntaxHighlighter
       showLineNumbers={true}
