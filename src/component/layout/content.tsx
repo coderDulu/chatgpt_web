@@ -8,7 +8,7 @@ import AutoScroll from 'du-autoscroll';
 import 'du-autoscroll/lib/dist/index.css'
 import localStorage from '@/utils/storage/localStorage';
 import { addCopyToPre } from '../hooks/useMarkDown';
-import useDebounce, { useThrottle } from '../hooks/useDebounce';
+import { useDebounce, useThrottle } from '../hooks/useDebounce';
 import { parseJSON } from '@/utils/json';
 
 export default function content() {
@@ -23,13 +23,17 @@ export default function content() {
     localStorage.set('sendData', data);
   }, 500);
 
+  const setReceive = useThrottle((data: string) => {
+    const len = sendData.length - 1;
+    sendData[len].receive = data;
+  }, 100)
+
   useEffect(() => {
     if (status === "end") {
-      receiveRef.current = "";
-      
       setTimeout(() => {
+        receiveRef.current = "";
         addCopyToPre()
-      }, 1000);
+      }, 500);
     }
   }, [status])
 
@@ -40,9 +44,7 @@ export default function content() {
       case "answer": {
         if (sendData.length) {
           receiveRef.current += value;
-
-          const len = sendData.length - 1;
-          sendData[len].receive = receiveRef.current;
+          setReceive(receiveRef.current)
         }
         if (status === "end") {
           dispatch({ type: "set", payload: { status: "run" } })
@@ -51,6 +53,8 @@ export default function content() {
       }
       case "status": {
         if (value === "end") {
+          const len = sendData.length - 1;
+          sendData[len].receive = receiveRef.current;
           dispatch({ type: "set", payload: { status: "end", sendData: [...sendData] } })
         }
         break;

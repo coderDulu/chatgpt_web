@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-export default function useDebounce(callback: (...args: any[]) => void, delay: number) {
+export function useDebounce(callback: (...args: any[]) => void, delay: number) {
   const timerRef = useRef<any>();
 
   useEffect(() => {
@@ -18,23 +18,18 @@ export default function useDebounce(callback: (...args: any[]) => void, delay: n
   return debounce
 }
 
-export function useThrottle(callback: any, delay: number) {
-  const timerRef = useRef<any>(null);
+// 实现节流函数
+export function useThrottle(callback: any, delay: number, deps = []) {
+  const lastTimeRef = useRef(Date.now());
 
-  useEffect(() => {
-    // return () => {
-    //   console.log(233);
-    //   clearTimeout(timerRef.current)
-    // }
-  })
-
-  const throttle = useCallback((...args: any[]) => {
-    if(!timerRef.current) {
-      timerRef.current = setTimeout(() => {
-        callback(args)
-      }, delay);
-    }
-  }, [callback, delay])
-
-  return throttle;
+  return useCallback(
+    (...args: any[]) => {
+      const now = Date.now();
+      if (now - lastTimeRef.current >= delay) {
+        callback(...args);
+        lastTimeRef.current = now;
+      }
+    },
+    [callback, delay, ...deps],
+  );
 }
