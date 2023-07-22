@@ -13,6 +13,7 @@ export function useWebSocket(url: string) {
   })
 
   const reconnect = () => {
+    console.log('reconnect');
     if (!connected.value) {
       ws.value = new WebSocket(url) // 创建
 
@@ -38,6 +39,14 @@ export function useWebSocket(url: string) {
           }, delay)
         }
       }
+
+      ws.value.onerror = () => {
+        console.log('ws error');
+        if(ws.value?.CLOSED) {
+          connected.value = false
+          reconnect()
+        }
+      }
     }
   }
 
@@ -48,6 +57,7 @@ export function useWebSocket(url: string) {
   onBeforeUnmount(() => {
     ws.value?.close()
   })
+
 
   return {
     send,
