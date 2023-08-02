@@ -33,8 +33,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/ws": {
-        target: `ws://${config.VITE_WSSERVER}:3200`,
-        ws: true
+        target: `http://${config.VITE_WSSERVER}:3200`,
+        // ws: true
       }
     }
   },

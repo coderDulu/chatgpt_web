@@ -31,7 +31,7 @@ const saveAndSend = () => {
 </script>
 
 <template>
-  <div class="send-c" @mouseenter="showDelete = true" @mouseleave="showDelete = false">
+  <div class="send-c" @mouseenter="() => showDelete = true" @mouseleave="showDelete = false">
     <div class="header">ME</div>
     
     <AutoScroll v-if="!showEdit" class="scroll-c" is-auto>

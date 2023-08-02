@@ -27,7 +27,8 @@ const stopSend = () => {
     type: "status",
     value: "stop"
   })
-  store.ws.send(stopData)
+  
+  store.requestServer(stopData)
 
   setTimeout(() => {
     store.$state.isRunning = false
@@ -44,9 +45,6 @@ const clearData = () => {
   localStorage.removeItem('sendData')
 }
 
-const handleFocus = () => {
-  console.log('focus');
-}
 
 </script>
 
@@ -57,7 +55,7 @@ const handleFocus = () => {
     <a-button @click="clearData" class="stop-btn" type="primary" danger>清空</a-button>
   </div>
   <div class="input-c">
-    <a-input :disabled="!store.ws.connected" v-model:value="value" autofocus @focus="handleFocus" @press-enter="send">
+    <a-input v-model:value="value" :disabled="store.$state.isRunning" autofocus @press-enter="send">
       <template #suffix>
         <send-outlined @click="send" class="send-icon" />
       </template>
@@ -86,6 +84,7 @@ const handleFocus = () => {
     border-color: transparent !important;
     padding: 0 10px;
     border-radius: 5px;
+    white-space: pre-wrap;
   }
 }
 
