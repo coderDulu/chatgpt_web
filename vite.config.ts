@@ -1,11 +1,11 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import { visualizer } from 'rollup-plugin-visualizer'
 import viteCompression from 'vite-plugin-compression'
+import legacy from '@vitejs/plugin-legacy'
 
 const config = loadEnv('development', './')
 
@@ -14,8 +14,11 @@ export default defineConfig({
   plugins: [
     vue(),
     splitVendorChunkPlugin(),
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    }),
     Components({
-      resolvers: [AntDesignVueResolver()],
+      resolvers: [AntDesignVueResolver()]
     }),
     visualizer(),
     viteCompression()
@@ -32,8 +35,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/ws": {
-        target: `http://${config.VITE_WSSERVER}:3200`,
+      '/api/question': {
+        target: `http://${config.VITE_WSSERVER}:3200`
         // ws: true
       }
     }
@@ -50,5 +53,5 @@ export default defineConfig({
         }
       }
     }
-  },
+  }
 })

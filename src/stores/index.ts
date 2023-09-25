@@ -32,7 +32,7 @@ export const useStateStore = defineStore('state', () => {
       content: string
     }[] = []
 
-    const newData = data.slice(-3) // 截取最后对应次数的连续会话
+    const newData = data.slice(-2) // 截取最后对应次数的连续会话
 
     newData.forEach((item: { send: string; receive: string }) => {
       const me = item.send
@@ -49,7 +49,7 @@ export const useStateStore = defineStore('state', () => {
 
   // 向服务器发送请求
   async function requestServer(body: any) {
-    const response = await fetch('http://localhost:3200/api/question', {
+    const response = await fetch(`/api/question`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
